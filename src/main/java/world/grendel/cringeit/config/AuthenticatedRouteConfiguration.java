@@ -1,10 +1,10 @@
-package world.grendel.userlogindemo.config;
+package world.grendel.cringeit.config;
 
 import org.aspectj.lang.Aspects;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import world.grendel.userlogindemo.aspects.AuthenticatedRouteHandler;
+import world.grendel.cringeit.aspects.AuthenticatedRouteHandler;
 
 /**
  * AuthenticatedRouteConfiguration

@@ -1,4 +1,4 @@
-package world.grendel.userlogindemo.services;
+package world.grendel.cringeit.services;
 
 import java.util.List;
 
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import jakarta.servlet.http.HttpSession;
-import world.grendel.userlogindemo.dataobjects.UserRegisterDTO;
-import world.grendel.userlogindemo.models.User;
-import world.grendel.userlogindemo.repositories.UserRepository;
+import world.grendel.cringeit.dataobjects.UserRegisterDTO;
+import world.grendel.cringeit.models.User;
+import world.grendel.cringeit.repositories.UserRepository;
 
 /**
  * UserService

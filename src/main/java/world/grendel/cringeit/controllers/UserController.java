@@ -1,4 +1,4 @@
-package world.grendel.userlogindemo.controllers;
+package world.grendel.cringeit.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import world.grendel.userlogindemo.annotation.AuthenticatedRoute;
-import world.grendel.userlogindemo.dataobjects.UserLoginDTO;
-import world.grendel.userlogindemo.dataobjects.UserRegisterDTO;
-import world.grendel.userlogindemo.models.User;
-import world.grendel.userlogindemo.services.UserService;
+import world.grendel.cringeit.annotation.AuthenticatedRoute;
+import world.grendel.cringeit.dataobjects.UserLoginDTO;
+import world.grendel.cringeit.dataobjects.UserRegisterDTO;
+import world.grendel.cringeit.models.User;
+import world.grendel.cringeit.services.UserService;
 
 /**
  * UserController

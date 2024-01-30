@@ -1,4 +1,4 @@
-package world.grendel.userlogindemo.annotation;
+package world.grendel.cringeit.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

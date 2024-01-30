@@ -1,4 +1,4 @@
-package world.grendel.userlogindemo.models;
+package world.grendel.cringeit.models;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package world.grendel.userlogindemo.aspects;
+package world.grendel.cringeit.aspects;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
 import jakarta.servlet.http.HttpSession;
-import world.grendel.userlogindemo.annotation.AuthenticatedRoute;
-import world.grendel.userlogindemo.models.User;
-import world.grendel.userlogindemo.services.UserService;
+import world.grendel.cringeit.annotation.AuthenticatedRoute;
+import world.grendel.cringeit.models.User;
+import world.grendel.cringeit.services.UserService;
 
 /**
  * AuthenticatedRouteAspect
@@ -24,7 +24,7 @@ public class AuthenticatedRouteHandler {
 
     private static AuthenticatedRouteHandler instance = new AuthenticatedRouteHandler();
 
-	@Around(value = "@annotation(world.grendel.userlogindemo.annotation.AuthenticatedRoute)")
+	@Around(value = "@annotation(world.grendel.cringeit.annotation.AuthenticatedRoute)")
     public String authenticateRoute(
         ProceedingJoinPoint joinPoint
     ) throws Throwable {

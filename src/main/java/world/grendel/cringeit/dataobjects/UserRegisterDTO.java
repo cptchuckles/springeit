@@ -1,4 +1,4 @@
-package world.grendel.userlogindemo.dataobjects;
+package world.grendel.cringeit.dataobjects;
 
 import org.hibernate.validator.constraints.Length;
 
