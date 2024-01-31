@@ -2,6 +2,7 @@ package world.grendel.cringeit.models;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -50,7 +51,7 @@ public class Cringe {
     private Date updatedAt;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cringe")
-	private List<CringeRating> ratings;
+	private Set<CringeRating> ratings;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cringe")
     private List<Comment> comments;
 
@@ -122,11 +123,11 @@ public class Cringe {
         this.updatedAt = new Date();
     }
 
-    public List<CringeRating> getRatings() {
+    public Set<CringeRating> getRatings() {
 		return ratings;
 	}
 
-	public void setRatings(List<CringeRating> ratings) {
+	public void setRatings(Set<CringeRating> ratings) {
 		this.ratings = ratings;
 	}
 

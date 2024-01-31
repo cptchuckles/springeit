@@ -2,6 +2,7 @@ package world.grendel.cringeit.models;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -57,12 +58,12 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Cringe> cringe;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-	private List<CringeRating> cringeRatings;
+	private Set<CringeRating> cringeRatings;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Comment> comments;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-	private List<CommentRating> commentRatings;
+	private Set<CommentRating> commentRatings;
 
 	public User() {
     }
@@ -140,11 +141,11 @@ public class User {
 		this.cringe = cringe;
 	}
 
-    public List<CringeRating> getCringeRatings() {
+    public Set<CringeRating> getCringeRatings() {
         return cringeRatings;
     }
 
-    public void setCringeRatings(List<CringeRating> cringeRatings) {
+    public void setCringeRatings(Set<CringeRating> cringeRatings) {
         this.cringeRatings = cringeRatings;
     }
 
@@ -156,11 +157,11 @@ public class User {
         this.comments = comments;
     }
 
-	public List<CommentRating> getCommentRatings() {
+	public Set<CommentRating> getCommentRatings() {
 		return commentRatings;
 	}
 
-	public void setCommentRatings(List<CommentRating> commentRatings) {
+	public void setCommentRatings(Set<CommentRating> commentRatings) {
 		this.commentRatings = commentRatings;
 	}
 }
