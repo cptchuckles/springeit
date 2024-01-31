@@ -68,12 +68,12 @@ public class UserService {
     public User login(UserLoginDTO userLogin, BindingResult result) {
         Optional<User> targetUser = userRepository.findByEmail(userLogin.getEmail());
         if (targetUser.isEmpty()) {
-            result.rejectValue("user", "login", "User credentials are invalid");
+            result.rejectValue("email", "login", "User credentials are invalid");
             return null;
         }
         User user = targetUser.get();
         if (! BCrypt.checkpw(userLogin.getPassword(), user.getPasswordHash())) {
-            result.rejectValue("user", "login", "User credentials are invalid");
+            result.rejectValue("email", "login", "User credentials are invalid");
             return null;
         }
         return user;
