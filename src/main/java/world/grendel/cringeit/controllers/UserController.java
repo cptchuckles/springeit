@@ -42,7 +42,7 @@ public class UserController {
         User user = userService.login(userLogin, result);
         if (result.hasErrors()) {
             model.addAttribute("userLogin", userLogin);
-            model.addAttribute("userRegister", userRegister);
+            model.addAttribute("userRegister", new UserRegisterDTO());
             return "authenticate.jsp";
         }
         session.setAttribute(User.sessionKey, user.getId());
@@ -68,7 +68,7 @@ public class UserController {
             return "authenticate.jsp";
         }
         session.setAttribute(User.sessionKey, newUser.getId());
-        return "redirect:/dashboard";
+        return "redirect:/cringe";
     }
 
     @GetMapping("/logout")
