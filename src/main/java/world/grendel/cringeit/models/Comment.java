@@ -1,12 +1,11 @@
 package world.grendel.cringeit.models;
 
 import java.util.Date;
-import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.persistence.CascadeType;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,33 +14,28 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 /**
- * Cringe
+ * Comment
  */
 @Entity
-@Table(name = "springe_cringe")
-public class Cringe {
+@Table(name = "springe_comments")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Nullable
+    private Long parentCommentId;
 
-    @Length(min = 3, max = 60)
-    private String headline;
-    @Length(min = 12, max = 255)
-    private String url;
     @NotBlank
+    @Length(max = 1024)
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String content;
 
     @Column(updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -49,12 +43,15 @@ public class Cringe {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updatedAt;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cringe")
-	private List<CringeRating> ratings;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cringe")
-    private List<Comment> comments;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	public Cringe() {
+    @ManyToOne
+    @JoinColumn(name = "cringe_id")
+    private Cringe cringe;
+
+    public Comment() {
     }
 
 	public Long getId() {
@@ -65,36 +62,20 @@ public class Cringe {
 		this.id = id;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getParentCommentId() {
+		return parentCommentId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setParentCommentId(Long parentCommentId) {
+		this.parentCommentId = parentCommentId;
 	}
 
-	public String getHeadline() {
-		return headline;
+	public String getContent() {
+		return content;
 	}
 
-	public void setHeadline(String headline) {
-		this.headline = headline;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public Date getCreatedAt() {
@@ -113,6 +94,22 @@ public class Cringe {
 		this.updatedAt = updatedAt;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Cringe getCringe() {
+		return cringe;
+	}
+
+	public void setCringe(Cringe cringe) {
+		this.cringe = cringe;
+	}
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = new Date();
@@ -121,20 +118,4 @@ public class Cringe {
     protected void onUpdate() {
         this.updatedAt = new Date();
     }
-
-    public List<CringeRating> getRatings() {
-		return ratings;
-	}
-
-	public void setRatings(List<CringeRating> ratings) {
-		this.ratings = ratings;
-	}
-
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
 }
