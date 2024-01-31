@@ -22,7 +22,7 @@ import jakarta.validation.constraints.Size;
  * User
  */
 @Entity
-@Table(name = "users")
+@Table(name = "springe_users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
