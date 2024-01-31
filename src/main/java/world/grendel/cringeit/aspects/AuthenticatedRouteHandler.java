@@ -41,7 +41,7 @@ public class AuthenticatedRouteHandler {
             return authenticatedRoute.redirectPath();
         }
 
-        model.addAttribute(User.sessionKey, currentUser.getId());
+        model.addAttribute(User.modelKey, currentUser);
 
         return (String) joinPoint.proceed();
     }
