@@ -39,6 +39,8 @@ public class User {
 
     @Transient
     public static final String sessionKey = "currentUserId";
+    @Transient
+    public static final String modelKey = "currentUser";
 
     @NotEmpty
     @Length(min = 3, max = 30)
