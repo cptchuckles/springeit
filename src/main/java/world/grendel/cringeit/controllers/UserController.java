@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import world.grendel.cringeit.annotation.AuthenticatedRoute;
 import world.grendel.cringeit.dataobjects.UserLoginDTO;
 import world.grendel.cringeit.dataobjects.UserRegisterDTO;
 import world.grendel.cringeit.models.User;
@@ -27,11 +26,27 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(
+    public String showLoginOrRegister(
         @ModelAttribute("userLogin") UserLoginDTO userLogin, 
         @ModelAttribute("userRegister") UserRegisterDTO userRegister
     ) {
         return "loginOrRegister.jsp";
+    }
+
+    @PostMapping("/login")
+    public String login(
+        @Valid @ModelAttribute("userLogin") UserLoginDTO userLogin, BindingResult result,
+        @ModelAttribute("userRegister") UserRegisterDTO userRegister,
+        HttpSession session, Model model
+    ) {
+        User user = userService.login(userLogin, result);
+        if (result.hasErrors()) {
+            model.addAttribute("userLogin", userLogin);
+            model.addAttribute("userRegister", userRegister);
+            return "loginOrRegister.jsp";
+        }
+        session.setAttribute(User.sessionKey, user.getId());
+        return "redirect:/cringe";
     }
 
     @PostMapping("/register")
@@ -47,20 +62,13 @@ public class UserController {
             model.addAttribute("userLogin", new UserLoginDTO());
             return "loginOrRegister.jsp";
         }
-        session.setAttribute("currentUserId", newUser.getId());
-        return "redirect:/users";
+        session.setAttribute(User.sessionKey, newUser.getId());
+        return "redirect:/dashboard";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
-    }
-
-    @GetMapping("/users")
-    @AuthenticatedRoute
-    public String index(HttpSession session, Model model) {
-        model.addAttribute("allUsers", userService.getAll());
-        return "userIndex.jsp";
     }
 }
