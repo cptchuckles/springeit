@@ -15,6 +15,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
@@ -54,6 +56,14 @@ public class Cringe {
 	private Set<CringeRating> ratings;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cringe")
     private List<Comment> comments;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "springe_whines",
+        joinColumns = @JoinColumn(name = "cringe_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> whiners;
 
 	public Cringe() {
     }
@@ -137,5 +147,13 @@ public class Cringe {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public Set<User> getWhiners() {
+		return whiners;
+	}
+
+	public void setWhiners(Set<User> whiners) {
+		this.whiners = whiners;
 	}
 }
