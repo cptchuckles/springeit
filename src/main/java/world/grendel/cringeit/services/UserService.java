@@ -1,12 +1,14 @@
 package world.grendel.cringeit.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import jakarta.servlet.http.HttpSession;
+import world.grendel.cringeit.dataobjects.UserLoginDTO;
 import world.grendel.cringeit.dataobjects.UserRegisterDTO;
 import world.grendel.cringeit.models.User;
 import world.grendel.cringeit.repositories.UserRepository;
@@ -23,7 +25,7 @@ public class UserService {
     }
 
     public User identifyCurrentUser(HttpSession session) throws Exception {
-        Long userId = (Long) session.getAttribute("currentUserId");
+        Long userId = (Long) session.getAttribute(User.sessionKey);
         if (userId == null) {
             throw new Exception("User not found");
         }
@@ -61,6 +63,20 @@ public class UserService {
         newUser.setEmail(userRegister.getEmail());
         newUser.setPasswordHash(BCrypt.hashpw(userRegister.getPassword(), BCrypt.gensalt()));
         return userRepository.save(newUser);
+    }
+
+    public User login(UserLoginDTO userLogin, BindingResult result) {
+        Optional<User> targetUser = userRepository.findByEmail(userLogin.getEmail());
+        if (targetUser.isEmpty()) {
+            result.rejectValue("user", "login", "User credentials are invalid");
+            return null;
+        }
+        User user = targetUser.get();
+        if (! BCrypt.checkpw(userLogin.getPassword(), user.getPasswordHash())) {
+            result.rejectValue("user", "login", "User credentials are invalid");
+            return null;
+        }
+        return user;
     }
 
     public User update(User whomstdve) {

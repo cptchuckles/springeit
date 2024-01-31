@@ -32,7 +32,7 @@ public class AuthenticatedRouteHandler {
     ) throws Throwable {
         AuthenticatedRoute authenticatedRoute = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(AuthenticatedRoute.class);
 
-        Long currentUserId = (Long) session.getAttribute("currentUserId");
+        Long currentUserId = (Long) session.getAttribute(User.sessionKey);
         if (currentUserId == null) {
             return authenticatedRoute.redirectPath();
         }
@@ -41,7 +41,7 @@ public class AuthenticatedRouteHandler {
             return authenticatedRoute.redirectPath();
         }
 
-        model.addAttribute("currentUserId", currentUser.getId());
+        model.addAttribute(User.sessionKey, currentUser.getId());
 
         return (String) joinPoint.proceed();
     }
