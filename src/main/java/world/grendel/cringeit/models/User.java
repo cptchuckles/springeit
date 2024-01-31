@@ -57,10 +57,12 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Cringe> cringe;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-	private List<Comment> comments;
+	private List<CringeRating> cringeRatings;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-	private List<CringeRating> cringeRatings;
+	private List<Comment> comments;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+	private List<CommentRating> commentRatings;
 
 	public User() {
     }
@@ -153,4 +155,12 @@ public class User {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+	public List<CommentRating> getCommentRatings() {
+		return commentRatings;
+	}
+
+	public void setCommentRatings(List<CommentRating> commentRatings) {
+		this.commentRatings = commentRatings;
+	}
 }
