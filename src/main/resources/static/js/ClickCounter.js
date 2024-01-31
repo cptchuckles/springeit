@@ -1,6 +1,6 @@
 import { html, useState, register } from "./deps.js";
 
-function Counter(props) {
+function ClickCounter(props) {
     const [count, setCount] = useState(0);
     const increment = () => setCount(count + 1);
     const decrement = () => setCount(count - 1);
@@ -18,4 +18,4 @@ function Counter(props) {
     `;
 }
 
-register(Counter, "click-counter");
+register(ClickCounter, "click-counter");

@@ -7,23 +7,14 @@
     <head>
         <meta charset="UTF-8" />
         <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+        <jsp:include page="lib/importmap.jsp" />
         <title>CringeIt Spring</title>
-        <script type="importmap">
-            {
-                "imports": {
-                "preact": "https://esm.sh/preact@10.19.2",
-                "https://esm.sh/preact/hooks": "https://esm.sh/preact@10.19.2/hooks",
-                "https://esm.sh/preact-custom-element": "https://esm.sh/preact-custom-element@4.3.0?external=preact",
-                "https://esm.sh/htm/preact": "https://esm.sh/htm@3.1.1/preact?external=preact"
-                }
-            }
-        </script>
     </head>
     <body>
+        <script type="module" src="/js/ClickCounter.js"></script>
         <div class="container mt-5">
             <h1>yeet</h1>
             <click-counter></click-counter>
         </div>
-        <script type="module" src="/js/Counter.js"></script>
     </body>
 </html>
