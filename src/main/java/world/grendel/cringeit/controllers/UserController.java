@@ -31,7 +31,7 @@ public class UserController {
         @ModelAttribute("userLogin") UserLoginDTO userLogin, 
         @ModelAttribute("userRegister") UserRegisterDTO userRegister
     ) {
-        return "loginForm.jsp";
+        return "loginOrRegister.jsp";
     }
 
     @PostMapping("/register")
@@ -45,7 +45,7 @@ public class UserController {
         if (result.hasErrors()) {
             model.addAttribute("userRegister", userRegister);
             model.addAttribute("userLogin", new UserLoginDTO());
-            return "loginForm.jsp";
+            return "loginOrRegister.jsp";
         }
         session.setAttribute("currentUserId", newUser.getId());
         return "redirect:/users";
