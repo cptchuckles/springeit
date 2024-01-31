@@ -30,7 +30,7 @@ public class UserController {
         @ModelAttribute("userLogin") UserLoginDTO userLogin, 
         @ModelAttribute("userRegister") UserRegisterDTO userRegister
     ) {
-        return "loginOrRegister.jsp";
+        return "authenticate.jsp";
     }
 
     @PostMapping("/login")
@@ -43,7 +43,7 @@ public class UserController {
         if (result.hasErrors()) {
             model.addAttribute("userLogin", userLogin);
             model.addAttribute("userRegister", userRegister);
-            return "loginOrRegister.jsp";
+            return "authenticate.jsp";
         }
         session.setAttribute(User.sessionKey, user.getId());
         return "redirect:/cringe";
@@ -65,7 +65,7 @@ public class UserController {
         if (result.hasErrors()) {
             model.addAttribute("userRegister", userRegister);
             model.addAttribute("userLogin", new UserLoginDTO());
-            return "loginOrRegister.jsp";
+            return "authenticate.jsp";
         }
         session.setAttribute(User.sessionKey, newUser.getId());
         return "redirect:/dashboard";
