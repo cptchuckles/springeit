@@ -2,6 +2,7 @@ package world.grendel.cringeit.models;
 
 import org.hibernate.validator.constraints.Range;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -26,6 +27,7 @@ public class CringeRating {
     private Cringe cringe;
 
     @Range(min = -1, max = 1)
+    @Column(columnDefinition = "TINYINT")
     private Integer delta;
 
     public CringeRating() {
