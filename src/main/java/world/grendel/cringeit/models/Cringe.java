@@ -156,4 +156,8 @@ public class Cringe {
 	public void setWhiners(Set<User> whiners) {
 		this.whiners = whiners;
 	}
+
+    public Integer totalRating() {
+        return ratings.stream().map(rating -> rating.getDelta()).reduce(0, (total, rating) -> total + rating);
+    }
 }
