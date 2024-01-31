@@ -56,7 +56,10 @@ public class User {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Cringe> cringe;
-    public User() {
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+	private List<CringeRating> cringeRatings;
+
+	public User() {
     }
 
 	public Long getId() {
@@ -131,4 +134,12 @@ public class User {
 	public void setCringe(List<Cringe> cringe) {
 		this.cringe = cringe;
 	}
+
+    public List<CringeRating> getCringeRatings() {
+        return cringeRatings;
+    }
+
+    public void setCringeRatings(List<CringeRating> cringeRatings) {
+        this.cringeRatings = cringeRatings;
+    }
 }

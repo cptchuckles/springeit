@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -47,7 +49,10 @@ public class Cringe {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updatedAt;
 
-    public Cringe() {
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cringe")
+	private List<CringeRating> ratings;
+
+	public Cringe() {
     }
 
 	public Long getId() {
@@ -114,4 +119,12 @@ public class Cringe {
     protected void onUpdate() {
         this.updatedAt = new Date();
     }
+
+    public List<CringeRating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(List<CringeRating> ratings) {
+		this.ratings = ratings;
+	}
 }
