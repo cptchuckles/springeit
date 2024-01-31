@@ -24,30 +24,12 @@ public class AuthenticatedRouteHandler {
 
     private static AuthenticatedRouteHandler instance = new AuthenticatedRouteHandler();
 
-	@Around(value = "@annotation(world.grendel.cringeit.annotation.AuthenticatedRoute)")
+	@Around(value = "@annotation(world.grendel.cringeit.annotation.AuthenticatedRoute) && args(session, model)")
     public String authenticateRoute(
-        ProceedingJoinPoint joinPoint
+        ProceedingJoinPoint joinPoint,
+        HttpSession session,
+        Model model
     ) throws Throwable {
-        HttpSession session = null;
-        Model model = null;
-        for (Object arg : joinPoint.getArgs()) {
-            if (session == null && arg instanceof HttpSession) {
-                session = (HttpSession) arg;
-            }
-            else if (model == null && arg instanceof Model) {
-                model = (Model) arg;
-            }
-            else {
-                break;
-            }
-        }
-        if (session == null) {
-            throw new Exception("Method does not use HttpSession");
-        }
-        if (model == null) {
-            throw new Exception("Method does not use Model");
-        }
-
         AuthenticatedRoute authenticatedRoute = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(AuthenticatedRoute.class);
 
         Long currentUserId = (Long) session.getAttribute("currentUserId");
