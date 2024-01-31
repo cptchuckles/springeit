@@ -52,7 +52,7 @@ public class Cringe {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updatedAt;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cringe")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "cringe")
 	private Set<CringeRating> ratings;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cringe")
     private List<Comment> comments;
