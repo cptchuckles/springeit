@@ -49,6 +49,11 @@ public class UserController {
         return "redirect:/cringe";
     }
 
+    @GetMapping("/register")
+    public String getRegister() {
+        return "redirect:/logout";
+    }
+
     @PostMapping("/register")
     public String register(
         @Valid @ModelAttribute("userRegister") UserRegisterDTO userRegister, BindingResult result,
