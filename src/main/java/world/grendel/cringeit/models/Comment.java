@@ -6,7 +6,6 @@ import java.util.List;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,10 +31,14 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Nullable
-    private Long parentCommentId;
+    @ManyToOne
+    @JoinColumn(name = "parent_comment_id")
+    private Comment parentComment;
 
-    @NotBlank
+	@OneToMany(mappedBy = "parentComment")
+    private List<Comment> replies;
+
+	@NotBlank
     @Length(max = 1024)
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -66,14 +69,6 @@ public class Comment {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getParentCommentId() {
-		return parentCommentId;
-	}
-
-	public void setParentCommentId(Long parentCommentId) {
-		this.parentCommentId = parentCommentId;
 	}
 
 	public String getContent() {
@@ -131,5 +126,21 @@ public class Comment {
 
 	public void setRatings(List<CommentRating> ratings) {
 		this.ratings = ratings;
+	}
+
+    public Comment getParentComment() {
+        return parentComment;
+    }
+
+    public void setParentComment(Comment parentComment) {
+        this.parentComment = parentComment;
+    }
+
+    public List<Comment> getReplies() {
+		return replies;
+	}
+
+	public void setReplies(List<Comment> replies) {
+		this.replies = replies;
 	}
 }
