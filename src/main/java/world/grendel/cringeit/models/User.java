@@ -1,15 +1,19 @@
 package world.grendel.cringeit.models;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -50,6 +54,8 @@ public class User {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updatedAt;
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+	private List<Cringe> cringe;
     public User() {
     }
 
@@ -117,4 +123,12 @@ public class User {
     protected void onUpdate() {
         this.updatedAt = new Date();
     }
+
+	public List<Cringe> getCringe() {
+		return cringe;
+	}
+
+	public void setCringe(List<Cringe> cringe) {
+		this.cringe = cringe;
+	}
 }
