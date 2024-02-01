@@ -17,5 +17,6 @@ import java.lang.annotation.Target;
 public @interface AuthenticatedRoute {
 
     public String redirectPath() default "redirect:/logout";
+    public boolean isApi() default true;
 
 }

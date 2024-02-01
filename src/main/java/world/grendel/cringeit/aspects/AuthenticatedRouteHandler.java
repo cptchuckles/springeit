@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 
 import jakarta.servlet.http.HttpSession;
 import world.grendel.cringeit.annotation.AuthenticatedRoute;
+import world.grendel.cringeit.exceptions.ApiNotAuthorizedException;
 import world.grendel.cringeit.models.User;
 import world.grendel.cringeit.services.UserService;
 
@@ -25,9 +26,9 @@ public class AuthenticatedRouteHandler {
     private static AuthenticatedRouteHandler instance = new AuthenticatedRouteHandler();
 
     @Around(value = "@annotation(world.grendel.cringeit.annotation.AuthenticatedRoute)")
-    public String authenticateRoute(ProceedingJoinPoint joinPoint) throws Throwable {
-        AuthenticatedRoute authenticatedRoute = ((MethodSignature) joinPoint.getSignature()).getMethod()
-                .getAnnotation(AuthenticatedRoute.class);
+    public Object authenticateRoute(ProceedingJoinPoint joinPoint) throws Throwable {
+        var signature = (MethodSignature) joinPoint.getSignature();
+        var meta = signature.getMethod().getAnnotation(AuthenticatedRoute.class);
 
         HttpSession session = null;
         Model model = null;
@@ -56,17 +57,26 @@ public class AuthenticatedRouteHandler {
             }
         }
         if (session == null) {
+            if (meta.isApi()) {
+                throw new ApiNotAuthorizedException(null);
+            }
             throw new Exception(String.format("No HttpSession was provided: %s", joinPoint.getSignature().toString()));
         }
 
         Long currentUserId = (Long) session.getAttribute(User.sessionKey);
         if (currentUserId == null) {
-            return authenticatedRoute.redirectPath();
+            if (meta.isApi()) {
+                throw new ApiNotAuthorizedException(null);
+            }
+            return meta.redirectPath();
         }
 
         User currentUser = userService.getById(currentUserId);
         if (currentUser == null) {
-            return authenticatedRoute.redirectPath();
+            if (meta.isApi()) {
+                throw new ApiNotAuthorizedException(null);
+            }
+            return meta.redirectPath();
         }
 
         if (model != null) {
@@ -77,7 +87,7 @@ public class AuthenticatedRouteHandler {
             args[userArg] = currentUser;
         }
 
-        return (String) joinPoint.proceed(args);
+        return joinPoint.proceed(args);
     }
 
     public static AuthenticatedRouteHandler aspectOf() {

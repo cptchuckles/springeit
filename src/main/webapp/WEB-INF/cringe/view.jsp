@@ -9,6 +9,8 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
     <title>SpringeIt - Post Cringe</title>
+    <%@ include file="../lib/importmap.jsp" %>
+    <script type="module" src="/js/CommentForm.js"></script>
   </head>
   <body>
     <%@ include file="../insert/header.jsp" %>
@@ -72,6 +74,7 @@
       </div>
 
       <!-- comments go here lmao -->
+      <comment-form cringe-id="${cringe.id}"></comment-form>
 
       <div class="d-flex flex-row w-100 mt-5 py-5 border-top border-secondary align-items-baseline">
         <div class="col">

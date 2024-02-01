@@ -18,9 +18,7 @@ import jakarta.validation.Valid;
 import world.grendel.cringeit.annotation.AuthenticatedRoute;
 import world.grendel.cringeit.models.Cringe;
 import world.grendel.cringeit.models.CringeRating;
-import world.grendel.cringeit.models.CringeRatingPK;
 import world.grendel.cringeit.models.User;
-import world.grendel.cringeit.repositories.CringeRatingRepository;
 import world.grendel.cringeit.services.CringeRatingService;
 import world.grendel.cringeit.services.CringeService;
 
