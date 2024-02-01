@@ -36,14 +36,20 @@ public class AuthenticatedRouteHandler {
         Object[] args = joinPoint.getArgs();
 
         for (int i = 0; i < args.length; i++) {
-            if (session == null && args[i] instanceof HttpSession) {
-                session = (HttpSession) args[i];
+            if (session == null) {
+                if (args[i] instanceof HttpSession) {
+                    session = (HttpSession) args[i];
+                }
             }
-            else if (model == null && args[i] instanceof Model) {
-                model = (Model) args[i];
+            else if (model == null) {
+                if (args[i] instanceof Model) {
+                    model = (Model) args[i];
+                }
             }
-            else if (userArg < 0 && args[i] instanceof User) {
-                userArg = i;
+            else if (userArg < 0) {
+                if (args[i] instanceof User) {
+                    userArg = i;
+                }
             }
             else {
                 break;
