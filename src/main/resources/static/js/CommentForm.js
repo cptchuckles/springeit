@@ -21,23 +21,23 @@ function CommentForm({parentCommentId, parentUsername, hiddenElement, cringeId})
     }
 
     return html`
-<form onSubmit=${submitForm} class="form my-3">
-    <textarea
-        name="content"
-        id="content"
-        rows="4"
-        class="form-control"
-        placeholder="${placeholder}"
-        value=${content}
-        onChange=${(ev) => setContent(ev.target.value)}
-    ></textarea>
-    <input type="submit" value="Submit" class="btn btn-success" />
-    ${ parentCommentId && html`
-    <button type="button" onClick=${closeForm} class="btn btn-secondary">Cancel</button>
-    <input type="hidden" name="parentCommentId" value=${parentCommentId} />
-    ` }
-</form>
-`;
+    <form onSubmit=${submitForm} class="form my-3">
+        <textarea
+            name="content"
+            id="content"
+            rows="4"
+            class="form-control mb-2"
+            placeholder="${placeholder}"
+            value=${content}
+            onChange=${(ev) => setContent(ev.target.value)}
+        ></textarea>
+        <input type="submit" value="Submit" class="btn btn-success" />
+        ${ parentCommentId && html`
+        <button type="button" onClick=${closeForm} class="btn btn-secondary">Cancel</button>
+        <input type="hidden" name="parentCommentId" value=${parentCommentId} />
+        ` }
+    </form>
+    `;
 }
 
 register(CommentForm, "comment-form", ["cringeId"]);
