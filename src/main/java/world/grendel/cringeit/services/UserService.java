@@ -69,6 +69,9 @@ public class UserService {
     }
 
     public User login(UserLoginDTO userLogin, BindingResult result) {
+        if (result.hasErrors()) {
+            return null;
+        }
         Optional<User> targetUser = userRepository.findByEmail(userLogin.getEmail());
         if (targetUser.isEmpty()) {
             result.rejectValue("email", "login", "User credentials are invalid");
