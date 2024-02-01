@@ -10,14 +10,14 @@
     <title>SpringeIt</title>
   </head>
   <body>
-    <jsp:include page="../insert/header.jsp" />
+    <%@ include file="../insert/header.jsp" %>
     <div class="container mt-5">
       <div class="d-flex flex-row justify-content-between align-items-baseline">
         <h1>All Cringe</h1>
         <a href="/cringe/new" class="btn btn-primary">Post Cringe!</a>
       </div>
       <c:forEach var="oneCringe" items="${allCringe}">
-      <jsp:include page="cringe/_insert.jsp" />
+      <%@ include file="./_insert.jsp" %>
       </c:forEach>
     </div>
   </body>
