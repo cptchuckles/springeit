@@ -32,16 +32,18 @@ public class CringeService {
             return null;
         }
         newCringe.setUser(creator);
+        newCringe.setDescription(sanitize(newCringe.getDescription()));
         return cringeRepository.save(newCringe);
     }
 
-    public Cringe update(Cringe cringe, User editor) {
+	public Cringe update(Cringe cringe, User editor) {
         if (editor == null) {
             return null;
         }
         if (editor.getId() != cringe.getUser().getId() && !editor.isAdmin()) {
             return null;
         }
+        cringe.setDescription(sanitize(cringe.getDescription()));
         return cringeRepository.save(cringe);
     }
 
@@ -56,4 +58,10 @@ public class CringeService {
         cringeRepository.deleteById(id);
         return true;
     }
+
+    private String sanitize(String description) {
+        return description
+            .replaceAll("(\\r\\n|\\r|\\n){2,}", "\n\n")
+            .replaceAll("( {2,}|\\t+)", "  ");
+	}
 }
