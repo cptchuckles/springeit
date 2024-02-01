@@ -17,7 +17,7 @@
         <div>
           <h1 class="col"><c:out value="${cringe.headline}" /></h1>
           <small class="lh-sm text-muted">
-            Posted by <c:out value="${cringe.user.username}" />
+            Posted by <a href="/users/${cringe.user.id}"><c:out value="${cringe.user.username}" /></a>
             on <fmt:formatDate value="${cringe.createdAt}" pattern="d MMM, yyyy" />
             <c:if test="${cringe.user.id eq currentUser.id}">
             <a class="mx-2 px-2 border-start border-dark" href="/cringe/${cringe.id}/edit">Edit</a>
@@ -33,8 +33,7 @@
         <a href="${cringe.url}" target="_blank"><c:out value="${cringe.url}" /></a>
       </h3>
 
-      <p class="fs-3" style="whitespace: pre">
-        <c:out value="${cringe.description}" />
+      <p class="fs-3 lh-sm" style="white-space: pre"><c:out value="${cringe.description}" />
       </p>
 
       <div class="text-center my-2 py-2 border-top border-bottom border-secondary" width="80%">
