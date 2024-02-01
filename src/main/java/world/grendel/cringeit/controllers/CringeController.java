@@ -60,7 +60,7 @@ public class CringeController {
         else {
             model.addAttribute("rating", "none");
         }
-        return "cringe/show.jsp";
+        return "cringe/view.jsp";
     }
 
     @GetMapping("/new")
