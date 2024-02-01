@@ -33,6 +33,12 @@ public class CringeRating {
     public CringeRating() {
     }
 
+    public CringeRating(User user, Cringe cringe, Integer delta) {
+        this.user = user;
+        this.cringe = cringe;
+        this.delta = delta;
+    }
+
     public User getUser() {
         return user;
     }

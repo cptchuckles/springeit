@@ -1,6 +1,7 @@
 package world.grendel.cringeit.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,13 +11,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import world.grendel.cringeit.annotation.AuthenticatedRoute;
 import world.grendel.cringeit.models.Cringe;
+import world.grendel.cringeit.models.CringeRating;
+import world.grendel.cringeit.models.CringeRatingPK;
 import world.grendel.cringeit.models.User;
+import world.grendel.cringeit.repositories.CringeRatingRepository;
+import world.grendel.cringeit.services.CringeRatingService;
 import world.grendel.cringeit.services.CringeService;
 
 /**
@@ -26,9 +31,11 @@ import world.grendel.cringeit.services.CringeService;
 @RequestMapping("/cringe")
 public class CringeController {
     private final CringeService cringeService;
+	private final CringeRatingService ratingService;
 
-    public CringeController(CringeService cringeService) {
+    public CringeController(CringeService cringeService, CringeRatingService ratingService) {
         this.cringeService = cringeService;
+		this.ratingService = ratingService;
     }
 
     @GetMapping
@@ -109,5 +116,32 @@ public class CringeController {
     public String delete(@PathVariable("cringeId") Long cringeId, HttpSession session, Model model, User currentUser) {
         cringeService.deleteById(cringeId, currentUser);
         return "redirect:/cringe";
+    }
+
+    @Transactional
+    @PostMapping("/{id}/rate")
+    @AuthenticatedRoute
+    public String rate(
+        HttpSession session, Model model, User currentUser,
+        @PathVariable("id") Long id,
+        @RequestParam(name = "delta") Integer delta
+    ) {
+        Cringe cringe = cringeService.getById(id);
+        if (cringe == null) {
+            return "redirect:/cringe";
+        }
+        if (delta < -1 || 1 < delta) {
+            return "redirect:/cringe";
+        }
+        CringeRatingPK ratingId = new CringeRatingPK(currentUser.getId(), cringe.getId());
+        CringeRating rating = ratingService.getById(ratingId);
+        if (rating != null && delta == rating.getDelta()) {
+            ratingService.delete(rating);
+        }
+        else {
+            rating = new CringeRating(currentUser, cringe, delta);
+            ratingService.upsert(rating);
+        }
+        return String.format("redirect:/cringe/%d", id);
     }
 }
