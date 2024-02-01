@@ -24,26 +24,50 @@ public class AuthenticatedRouteHandler {
 
     private static AuthenticatedRouteHandler instance = new AuthenticatedRouteHandler();
 
-	@Around(value = "@annotation(world.grendel.cringeit.annotation.AuthenticatedRoute) && args(session, model)")
-    public String authenticateRoute(
-        ProceedingJoinPoint joinPoint,
-        HttpSession session,
-        Model model
-    ) throws Throwable {
+	@Around(value = "@annotation(world.grendel.cringeit.annotation.AuthenticatedRoute)")
+    public String authenticateRoute(ProceedingJoinPoint joinPoint) throws Throwable {
         AuthenticatedRoute authenticatedRoute = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(AuthenticatedRoute.class);
+
+        HttpSession session = null;
+        Model model = null;
+        int userArg = -1;
+
+        Object[] args = joinPoint.getArgs();
+
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] instanceof HttpSession) {
+                session = (HttpSession) args[i];
+            }
+            else if (args[i] instanceof Model) {
+                model = (Model) args[i];
+            }
+            else if (args[i] instanceof User) {
+                userArg = i;
+            }
+        }
+        if (session == null) {
+            throw new Exception("Session was not provided");
+        }
 
         Long currentUserId = (Long) session.getAttribute(User.sessionKey);
         if (currentUserId == null) {
             return authenticatedRoute.redirectPath();
         }
+
         User currentUser = userService.getById(currentUserId);
         if (currentUser == null) {
             return authenticatedRoute.redirectPath();
         }
 
-        model.addAttribute(User.modelKey, currentUser);
+        if (model != null) {
+            model.addAttribute(User.modelKey, currentUser);
+        }
 
-        return (String) joinPoint.proceed();
+        if (userArg >= 0) {
+            args[userArg] = currentUser;
+        }
+
+        return (String) joinPoint.proceed(args);
     }
 
     public static AuthenticatedRouteHandler aspectOf() {
