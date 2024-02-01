@@ -19,12 +19,12 @@
           <small class="lh-sm text-muted">
             Posted by <a href="/users/${cringe.user.id}"><c:out value="${cringe.user.username}" /></a>
             on <fmt:formatDate value="${cringe.createdAt}" pattern="d MMM, yyyy" />
-            <c:if test="${cringe.user.id eq currentUser.id}">
+            <c:if test="${cringe.user.id eq currentUser.id || currentUser.isAdmin()}">
             <a class="mx-2 px-2 border-start border-dark" href="/cringe/${cringe.id}/edit">Edit</a>
             </c:if>
           </small>
         </div>
-        <h1 class="bg-dark text-light p-3 text-center d-flex flex-column justify-content-center rounded-pill">
+        <h1 style="min-width: 3ch" class="bg-dark text-light p-3 text-center d-flex flex-column justify-content-center rounded-pill">
           <c:out value="${cringe.getTotalRating()}" />
         </h1>
       </div>
@@ -33,7 +33,7 @@
         <a href="${cringe.url}" target="_blank"><c:out value="${cringe.url}" /></a>
       </h3>
 
-      <p class="fs-3 lh-sm" style="white-space: pre"><c:out value="${cringe.description}" />
+      <p class="fs-3 lh-sm" style="word-wrap: break-word; white-space: pre-line"><c:out value="${cringe.description}" />
       </p>
 
       <div class="text-center my-2 py-2 border-top border-bottom border-secondary" width="80%">
