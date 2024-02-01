@@ -33,27 +33,27 @@ public class CommentRating {
     public CommentRating() {
     }
 
-	public User getUser() {
-		return user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public Comment getComment() {
-		return comment;
-	}
+    public Comment getComment() {
+        return comment;
+    }
 
-	public void setComment(Comment comment) {
-		this.comment = comment;
-	}
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
 
-	public Integer getDelta() {
-		return delta;
-	}
+    public Integer getDelta() {
+        return delta;
+    }
 
-	public void setDelta(Integer delta) {
-		this.delta = delta;
-	}
+    public void setDelta(Integer delta) {
+        this.delta = delta;
+    }
 }

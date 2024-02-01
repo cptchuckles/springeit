@@ -20,8 +20,8 @@ import world.grendel.cringeit.repositories.UserRepository;
 public class UserService {
     private final UserRepository userRepository;
 
-	public UserService(UserRepository userRepository) {
-		this.userRepository = userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public User identifyCurrentUser(HttpSession session) throws Exception {

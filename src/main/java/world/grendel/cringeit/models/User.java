@@ -55,24 +55,24 @@ public class User {
     @Column(columnDefinition = "CHAR(60)")
     private String passwordHash;
 
-	@NotNull
-	private Boolean isAdmin = false;
+    @NotNull
+    private Boolean isAdmin = false;
 
-	@Column(updatable = false)
+    @Column(updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updatedAt;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-	private List<Cringe> cringe;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-	private Set<CringeRating> cringeRatings;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Cringe> cringe;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<CringeRating> cringeRatings;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-	private List<Comment> comments;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-	private Set<CommentRating> commentRatings;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Comment> comments;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<CommentRating> commentRatings;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -82,68 +82,68 @@ public class User {
     )
     private Set<Cringe> whines;
 
-	public User() {
+    public User() {
     }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getPasswordHash() {
-		return passwordHash;
-	}
+    public String getPasswordHash() {
+        return passwordHash;
+    }
 
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
 
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     public Boolean getIsAdmin() {
         return isAdmin;
     }
 
     public Boolean isAdmin() {
-		return isAdmin;
-	}
+        return isAdmin;
+    }
 
-	public void setIsAdmin(Boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
 
     @PrePersist
     protected void onCreate() {
@@ -154,13 +154,13 @@ public class User {
         this.updatedAt = new Date();
     }
 
-	public List<Cringe> getCringe() {
-		return cringe;
-	}
+    public List<Cringe> getCringe() {
+        return cringe;
+    }
 
-	public void setCringe(List<Cringe> cringe) {
-		this.cringe = cringe;
-	}
+    public void setCringe(List<Cringe> cringe) {
+        this.cringe = cringe;
+    }
 
     public Set<CringeRating> getCringeRatings() {
         return cringeRatings;
@@ -178,19 +178,19 @@ public class User {
         this.comments = comments;
     }
 
-	public Set<CommentRating> getCommentRatings() {
-		return commentRatings;
-	}
+    public Set<CommentRating> getCommentRatings() {
+        return commentRatings;
+    }
 
-	public void setCommentRatings(Set<CommentRating> commentRatings) {
-		this.commentRatings = commentRatings;
-	}
+    public void setCommentRatings(Set<CommentRating> commentRatings) {
+        this.commentRatings = commentRatings;
+    }
 
-	public Set<Cringe> getWhines() {
-		return whines;
-	}
+    public Set<Cringe> getWhines() {
+        return whines;
+    }
 
-	public void setWhines(Set<Cringe> whines) {
-		this.whines = whines;
-	}
+    public void setWhines(Set<Cringe> whines) {
+        this.whines = whines;
+    }
 }

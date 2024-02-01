@@ -15,8 +15,8 @@ import world.grendel.cringeit.repositories.CringeRepository;
 public class CringeService {
     private final CringeRepository cringeRepository;
 
-	public CringeService(CringeRepository cringeRepository) {
-		this.cringeRepository = cringeRepository;
+    public CringeService(CringeRepository cringeRepository) {
+        this.cringeRepository = cringeRepository;
     }
 
     public List<Cringe> getAll() {

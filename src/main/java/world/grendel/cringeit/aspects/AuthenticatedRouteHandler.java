@@ -24,9 +24,10 @@ public class AuthenticatedRouteHandler {
 
     private static AuthenticatedRouteHandler instance = new AuthenticatedRouteHandler();
 
-	@Around(value = "@annotation(world.grendel.cringeit.annotation.AuthenticatedRoute)")
+    @Around(value = "@annotation(world.grendel.cringeit.annotation.AuthenticatedRoute)")
     public String authenticateRoute(ProceedingJoinPoint joinPoint) throws Throwable {
-        AuthenticatedRoute authenticatedRoute = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(AuthenticatedRoute.class);
+        AuthenticatedRoute authenticatedRoute = ((MethodSignature) joinPoint.getSignature()).getMethod()
+                .getAnnotation(AuthenticatedRoute.class);
 
         HttpSession session = null;
         Model model = null;
@@ -75,10 +76,10 @@ public class AuthenticatedRouteHandler {
     }
 
     public UserService getUserService() {
-		return userService;
-	}
+        return userService;
+    }
 
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 }

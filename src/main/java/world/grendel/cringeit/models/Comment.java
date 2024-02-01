@@ -35,10 +35,10 @@ public class Comment {
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
-	@OneToMany(mappedBy = "parentComment")
+    @OneToMany(mappedBy = "parentComment")
     private List<Comment> replies;
 
-	@NotBlank
+    @NotBlank
     @Length(max = 1024)
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -60,56 +60,56 @@ public class Comment {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "comment")
     private List<CommentRating> ratings;
 
-	public Comment() {
+    public Comment() {
     }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
 
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public Cringe getCringe() {
-		return cringe;
-	}
+    public Cringe getCringe() {
+        return cringe;
+    }
 
-	public void setCringe(Cringe cringe) {
-		this.cringe = cringe;
-	}
+    public void setCringe(Cringe cringe) {
+        this.cringe = cringe;
+    }
 
     @PrePersist
     protected void onCreate() {
@@ -121,12 +121,12 @@ public class Comment {
     }
 
     public List<CommentRating> getRatings() {
-		return ratings;
-	}
+        return ratings;
+    }
 
-	public void setRatings(List<CommentRating> ratings) {
-		this.ratings = ratings;
-	}
+    public void setRatings(List<CommentRating> ratings) {
+        this.ratings = ratings;
+    }
 
     public Comment getParentComment() {
         return parentComment;
@@ -137,10 +137,10 @@ public class Comment {
     }
 
     public List<Comment> getReplies() {
-		return replies;
-	}
+        return replies;
+    }
 
-	public void setReplies(List<Comment> replies) {
-		this.replies = replies;
-	}
+    public void setReplies(List<Comment> replies) {
+        this.replies = replies;
+    }
 }

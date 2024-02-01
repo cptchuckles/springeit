@@ -23,8 +23,8 @@ import world.grendel.cringeit.services.CringeService;
 public class CringeController {
     private final CringeService cringeService;
 
-	public CringeController(CringeService cringeService) {
-		this.cringeService = cringeService;
+    public CringeController(CringeService cringeService) {
+        this.cringeService = cringeService;
     }
 
     @GetMapping

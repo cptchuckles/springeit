@@ -33,27 +33,27 @@ public class CringeRating {
     public CringeRating() {
     }
 
-	public User getUser() {
-		return user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public Cringe getCringe() {
-		return cringe;
-	}
+    public Cringe getCringe() {
+        return cringe;
+    }
 
-	public void setCringe(Cringe cringe) {
-		this.cringe = cringe;
-	}
+    public void setCringe(Cringe cringe) {
+        this.cringe = cringe;
+    }
 
-	public Integer getDelta() {
-		return delta;
-	}
+    public Integer getDelta() {
+        return delta;
+    }
 
-	public void setDelta(Integer delta) {
-		this.delta = delta;
-	}
+    public void setDelta(Integer delta) {
+        this.delta = delta;
+    }
 }

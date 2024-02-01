@@ -52,8 +52,8 @@ public class Cringe {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updatedAt;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "cringe")
-	private Set<CringeRating> ratings;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "cringe")
+    private Set<CringeRating> ratings;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cringe")
     private List<Comment> comments;
 
@@ -65,64 +65,64 @@ public class Cringe {
     )
     private Set<User> whiners;
 
-	public Cringe() {
+    public Cringe() {
     }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public String getHeadline() {
-		return headline;
-	}
+    public String getHeadline() {
+        return headline;
+    }
 
-	public void setHeadline(String headline) {
-		this.headline = headline;
-	}
+    public void setHeadline(String headline) {
+        this.headline = headline;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
 
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     @PrePersist
     protected void onCreate() {
@@ -134,28 +134,28 @@ public class Cringe {
     }
 
     public Set<CringeRating> getRatings() {
-		return ratings;
-	}
+        return ratings;
+    }
 
-	public void setRatings(Set<CringeRating> ratings) {
-		this.ratings = ratings;
-	}
+    public void setRatings(Set<CringeRating> ratings) {
+        this.ratings = ratings;
+    }
 
-	public List<Comment> getComments() {
-		return comments;
-	}
+    public List<Comment> getComments() {
+        return comments;
+    }
 
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
-	public Set<User> getWhiners() {
-		return whiners;
-	}
+    public Set<User> getWhiners() {
+        return whiners;
+    }
 
-	public void setWhiners(Set<User> whiners) {
-		this.whiners = whiners;
-	}
+    public void setWhiners(Set<User> whiners) {
+        this.whiners = whiners;
+    }
 
     public Integer totalRating() {
         return ratings.stream().map(rating -> rating.getDelta()).reduce(0, (total, rating) -> total + rating);
