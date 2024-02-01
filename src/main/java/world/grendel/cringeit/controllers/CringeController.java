@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
@@ -53,7 +54,7 @@ public class CringeController {
     @AuthenticatedRoute
     public String createForm(HttpSession session, Model model) {
         model.addAttribute("newCringe", new Cringe());
-        return "cringe/form.jsp";
+        return "cringe/new.jsp";
     }
 
     @PostMapping
@@ -64,9 +65,46 @@ public class CringeController {
     ) {
         if (result.hasErrors()) {
             model.addAttribute("newCringe", newCringe);
-            return "cringe/form.jsp";
+            return "cringe/new.jsp";
         }
         cringeService.create(newCringe, currentUser);
         return "redirect:/cringe";
+    }
+
+    @GetMapping("/{id}/edit")
+    @AuthenticatedRoute
+    public String edit(
+        HttpSession session, Model model, User currentUser,
+        @PathVariable("id") Long id
+    ) {
+        Cringe cringe = cringeService.getById(id);
+        if (cringe == null) {
+            return "redirect:/cringe";
+        }
+        if (!currentUser.isAdmin() && cringe.getUser().getId() != currentUser.getId()) {
+            return String.format("redirect:/cringe/%d", cringe.getId());
+        }
+        model.addAttribute("cringe", cringe);
+        return "cringe/edit.jsp";
+    }
+
+    @PutMapping("/{id}")
+    @AuthenticatedRoute
+    public String update(
+        HttpSession session, Model model, User currentUser,
+        @Valid @ModelAttribute("cringe") Cringe cringe, BindingResult result,
+        @PathVariable("id") Long id
+    ) {
+        if (result.hasErrors()) {
+            model.addAttribute("cringe", cringe);
+            model.addAttribute(User.modelKey, currentUser);
+            return "cringe/edit.jsp";
+        }
+        Cringe targetCringe = cringeService.getById(id);
+        targetCringe.setHeadline(cringe.getHeadline());
+        targetCringe.setUrl(cringe.getUrl());
+        targetCringe.setDescription(cringe.getDescription());
+        cringeService.update(targetCringe, currentUser);
+        return String.format("redirect:/cringe/%d", cringe.getId());
     }
 }
