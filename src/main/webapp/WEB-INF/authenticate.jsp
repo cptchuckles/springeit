@@ -27,7 +27,7 @@
             </p>
             <p>
               <form:errors class="form-text text-danger" path="password" />
-              <form:input type="password" class="form-control" path="password" placeholder="Enter a password" />
+              <form:input type="password" class="form-control" path="password" placeholder="Enter a Password" />
             </p>
             <p>
               <form:errors class="form-text text-danger" path="confirmPassword" />
