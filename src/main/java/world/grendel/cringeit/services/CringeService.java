@@ -20,7 +20,7 @@ public class CringeService {
     }
 
     public List<Cringe> getAll() {
-        return cringeRepository.findAll();
+        return cringeRepository.findAllOrderByCreatedAtDesc();
     }
 
     public Cringe getById(Long id) {
