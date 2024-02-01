@@ -55,6 +55,9 @@ public class UserService {
         if (userRepository.findByEmail(userRegister.getEmail()).isPresent()) {
             result.rejectValue("email", "Email", "This email address has already been registered");
         }
+        if (userRepository.findByUsername(userRegister.getUsername()).isPresent()) {
+            result.rejectValue("username", "Username", "This username is already taken");
+        }
         if (result.hasErrors()) {
             return null;
         }

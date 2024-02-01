@@ -14,5 +14,6 @@ import world.grendel.cringeit.models.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
     public Optional<User> findByEmail(String search);
+    public Optional<User> findByUsername(String username);
     public List<User> findAll();
 }
