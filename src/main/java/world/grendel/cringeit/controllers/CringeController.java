@@ -3,12 +3,14 @@ package world.grendel.cringeit.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -38,10 +40,7 @@ public class CringeController {
 
     @GetMapping("/{id}")
     @AuthenticatedRoute
-    public String show(
-        HttpSession session, Model model,
-        @PathVariable("id") Long cringeId
-    ) {
+    public String show(@PathVariable("id") Long cringeId, HttpSession session, Model model) {
         Cringe cringe = cringeService.getById(cringeId);
         if (cringe == null) {
             return "redirect:/cringe";
@@ -73,10 +72,7 @@ public class CringeController {
 
     @GetMapping("/{id}/edit")
     @AuthenticatedRoute
-    public String edit(
-        HttpSession session, Model model, User currentUser,
-        @PathVariable("id") Long id
-    ) {
+    public String edit(@PathVariable("id") Long id, HttpSession session, Model model, User currentUser) {
         Cringe cringe = cringeService.getById(id);
         if (cringe == null) {
             return "redirect:/cringe";
@@ -106,5 +102,12 @@ public class CringeController {
         targetCringe.setDescription(cringe.getDescription());
         cringeService.update(targetCringe, currentUser);
         return String.format("redirect:/cringe/%d", cringe.getId());
+    }
+
+    @DeleteMapping(path = "/{cringeId}")
+    @AuthenticatedRoute
+    public String delete(@PathVariable("cringeId") Long cringeId, HttpSession session, Model model, User currentUser) {
+        cringeService.deleteById(cringeId, currentUser);
+        return "redirect:/cringe";
     }
 }
