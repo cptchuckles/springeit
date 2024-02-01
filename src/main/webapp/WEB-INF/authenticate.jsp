@@ -11,8 +11,8 @@
     <title>SpringeIt</title>
   </head>
   <body>
+    <h1 class="text-center m-5 border-bottom border-secondary p-3">SpringeIt</h1>
     <div class="container mt-5">
-      <h1 class="center">SpringeIt</h1>
       <div class="d-flex flex-row gap-3">
         <div class="card col p-3">
           <h3>Register</h3>
