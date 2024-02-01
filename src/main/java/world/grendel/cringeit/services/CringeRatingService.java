@@ -32,7 +32,6 @@ public class CringeRatingService {
     }
 
     public void delete(CringeRating rating) {
-        System.out.println("deleting rating");
         repo.deleteFromUserForCringe(rating.getUser(), rating.getCringe());
     }
 }
