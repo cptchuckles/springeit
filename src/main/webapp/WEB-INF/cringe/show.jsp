@@ -42,6 +42,15 @@
         <a href="#" class="btn btn-danger btn-lg">- BORING</a>
       </div>
 
+      <div class="d-flex flex-row w-100 py-5 align-items-baseline">
+        <div class="col">
+          <a href="/cringe" class="btn btn-secondary">Return to Cringe Feed</a>
+        </div>
+        <div class="col text-end">
+          <a href="/cringe/${cringe.id}/whine">Report this Cringe</a>
+        </div>
+      </div>
+
       <!-- comments go here lmao -->
 
       <div class="d-flex flex-row w-100 mt-5 py-5 border-top border-secondary align-items-baseline">
