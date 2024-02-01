@@ -5,10 +5,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import world.grendel.cringeit.annotation.AuthenticatedRoute;
 import world.grendel.cringeit.dataobjects.UserLoginDTO;
 import world.grendel.cringeit.dataobjects.UserRegisterDTO;
 import world.grendel.cringeit.models.User;
@@ -31,6 +33,20 @@ public class UserController {
         @ModelAttribute("userRegister") UserRegisterDTO userRegister
     ) {
         return "authenticate.jsp";
+    }
+
+    @GetMapping("/users/{id}")
+    @AuthenticatedRoute
+    public String show(
+        HttpSession session, Model model, User currentUser,
+        @PathVariable("id") Long id
+    ) {
+        User user = userService.getById(id);
+        if (user == null) {
+            return "redirect:/cringe";
+        }
+        model.addAttribute("user", user);
+        return "user/view.jsp";
     }
 
     @PostMapping("/login")
