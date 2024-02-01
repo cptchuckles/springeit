@@ -37,9 +37,29 @@
       </p>
 
       <div class="text-center my-2 py-2 border-top border-bottom border-secondary" width="80%">
-        <a href="#" class="btn btn-success btn-lg">+ CRINGE</a>
+        <form id="rate-up" action="/cringe/${cringe.id}/rate" method="POST">
+          <input type="hidden" name="delta" value="1" />
+        </form>
+        <form id="rate-down" action="/cringe/${cringe.id}/rate" method="POST">
+          <input type="hidden" name="delta" value="-1" />
+        </form>
+        <c:choose>
+        <c:when test="${rating eq 'up'}">
+        <input type="submit" form="rate-up" value="+ CRINGE" class="btn btn-success btn-lg" />
         <span class="text-muted">← RATE THIS CRINGE →</span>
-        <a href="#" class="btn btn-danger btn-lg">- BORING</a>
+        <input type="submit" form="rate-down" value="- BORING" class="btn btn-light btn-lg text-danger border border-3 border-danger" />
+        </c:when>
+        <c:when test="${rating eq 'down'}">
+        <input type="submit" form="rate-up" value="+ CRINGE" class="btn btn-light btn-lg text-success border border-3 border-success" />
+        <span class="text-muted">← RATE THIS CRINGE →</span>
+        <input type="submit" form="rate-down" value="- BORING" class="btn btn-danger btn-lg" />
+        </c:when>
+        <c:otherwise>
+        <input type="submit" form="rate-up" value="+ CRINGE" class="btn btn-light btn-lg text-success border border-3 border-success" />
+        <span class="text-muted">← RATE THIS CRINGE →</span>
+        <input type="submit" form="rate-down" value="- BORING" class="btn btn-light btn-lg text-danger border border-3 border-danger" />
+        </c:otherwise>
+        </c:choose>
       </div>
 
       <div class="d-flex flex-row w-100 py-5 align-items-baseline">

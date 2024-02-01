@@ -47,12 +47,19 @@ public class CringeController {
 
     @GetMapping("/{id}")
     @AuthenticatedRoute
-    public String show(@PathVariable("id") Long cringeId, HttpSession session, Model model) {
+    public String show(@PathVariable("id") Long cringeId, HttpSession session, Model model, User currentUser) {
         Cringe cringe = cringeService.getById(cringeId);
         if (cringe == null) {
             return "redirect:/cringe";
         }
         model.addAttribute("cringe", cringe);
+        CringeRating rating = ratingService.getFromUserForCringe(currentUser, cringe);
+        if (rating != null) {
+            model.addAttribute("rating", rating.getDelta() > 0 ? "up" : "down");
+        }
+        else {
+            model.addAttribute("rating", "none");
+        }
         return "cringe/show.jsp";
     }
 
@@ -133,8 +140,7 @@ public class CringeController {
         if (delta < -1 || 1 < delta) {
             return "redirect:/cringe";
         }
-        CringeRatingPK ratingId = new CringeRatingPK(currentUser.getId(), cringe.getId());
-        CringeRating rating = ratingService.getById(ratingId);
+        CringeRating rating = ratingService.getFromUserForCringe(currentUser, cringe);
         if (rating != null && delta == rating.getDelta()) {
             ratingService.delete(rating);
         }
