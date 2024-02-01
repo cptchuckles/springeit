@@ -2,7 +2,6 @@
     pageEncoding="UTF-8" import="java.util.Date"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -12,7 +11,7 @@
   </head>
   <body>
     <%@ include file="../insert/header.jsp" %>
-    <div class="container mt-5" id="top">
+    <div class="container my-5" id="top">
       <div class="d-flex flex-row justify-content-between mb-5">
         <div>
           <h1><c:out value="${user.username}" /></h1>
@@ -29,6 +28,10 @@
         </div>
       </div>
 
+      <c:if test="${currentUser.isAdmin() && user.id eq currentUser.id}">
+      <%@ include file="_adminDashboard.jsp" %>
+      </c:if>
+
       <div class="d-flex flex-row justify-content-between">
         <h3>Total Cringe: <c:out value="${user.getTotalCringe()}" /></h3>
         <div>
@@ -36,6 +39,10 @@
           <a href="/cringe/new" class="btn btn-success">+ Post Cringe</a>
         </div>
       </div>
+
+      <c:if test="${user.cringe.size() eq 0}">
+      <p>This user has not posted any cringe.</p>
+      </c:if>
 
       <c:forEach var="oneCringe" items="${user.cringe}">
       <%@ include file="../cringe/_insert.jsp" %>

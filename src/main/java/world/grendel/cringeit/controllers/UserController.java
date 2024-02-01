@@ -45,6 +45,9 @@ public class UserController {
         if (user == null) {
             return "redirect:/cringe";
         }
+        if (currentUser.isAdmin()) {
+            model.addAttribute("allUsers", userService.getAll());
+        }
         model.addAttribute("user", user);
         return "user/view.jsp";
     }
