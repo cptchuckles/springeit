@@ -36,18 +36,21 @@ public class AuthenticatedRouteHandler {
         Object[] args = joinPoint.getArgs();
 
         for (int i = 0; i < args.length; i++) {
-            if (args[i] instanceof HttpSession) {
+            if (session == null && args[i] instanceof HttpSession) {
                 session = (HttpSession) args[i];
             }
-            else if (args[i] instanceof Model) {
+            else if (model == null && args[i] instanceof Model) {
                 model = (Model) args[i];
             }
-            else if (args[i] instanceof User) {
+            else if (userArg < 0 && args[i] instanceof User) {
                 userArg = i;
+            }
+            else {
+                break;
             }
         }
         if (session == null) {
-            throw new Exception("Session was not provided");
+            throw new Exception(String.format("No HttpSession was provided: %s", joinPoint.getSignature().toString()));
         }
 
         Long currentUserId = (Long) session.getAttribute(User.sessionKey);
