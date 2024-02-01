@@ -63,6 +63,12 @@ public class Comment {
     public Comment() {
     }
 
+    public Integer getTotalRating() {
+        return ratings.stream()
+            .map(rating -> rating.getDelta())
+            .reduce(0, (sum, rating) -> sum + rating);
+    }
+
     public Long getId() {
         return id;
     }

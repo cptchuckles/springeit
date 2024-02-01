@@ -85,6 +85,17 @@ public class User {
     public User() {
     }
 
+    public Integer getTotalCringe() {
+        return
+        cringe.stream()
+            .map(c -> c.getTotalRating())
+            .reduce(0, (sum, rating) -> sum + rating)
+        +
+        comments.stream()
+            .map(com -> com.getTotalRating())
+            .reduce(0, (sum, rating) -> sum + rating);
+    }
+
     public Long getId() {
         return id;
     }

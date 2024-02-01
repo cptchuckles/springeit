@@ -25,7 +25,7 @@
           </small>
         </div>
         <h1 class="bg-dark text-light p-3 text-center d-flex flex-column justify-content-center rounded-pill">
-          <c:out value="${cringe.totalRating()}" />
+          <c:out value="${cringe.getTotalRating()}" />
         </h1>
       </div>
 
