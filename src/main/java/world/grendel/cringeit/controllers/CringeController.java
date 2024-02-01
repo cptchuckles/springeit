@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -32,6 +33,20 @@ public class CringeController {
     public String index(HttpSession session, Model model) {
         model.addAttribute("allCringe", cringeService.getAll());
         return "cringe/index.jsp";
+    }
+
+    @GetMapping("/{id}")
+    @AuthenticatedRoute
+    public String show(
+        HttpSession session, Model model,
+        @PathVariable("id") Long cringeId
+    ) {
+        Cringe cringe = cringeService.getById(cringeId);
+        if (cringe == null) {
+            return "redirect:/cringe";
+        }
+        model.addAttribute("cringe", cringe);
+        return "cringe/show.jsp";
     }
 
     @GetMapping("/new")
