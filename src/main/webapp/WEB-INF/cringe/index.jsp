@@ -16,9 +16,19 @@
         <h1>Cringe feed</h1>
         <a href="/cringe/new" class="btn btn-primary">Post Cringe!</a>
       </div>
+      <c:choose>
+      <c:when test="${allCringe.size() gt 0}">
       <c:forEach var="oneCringe" items="${allCringe}">
       <%@ include file="./_insert.jsp" %>
       </c:forEach>
+      </c:when>
+      <c:otherwise>
+      <div class="card bg-secondary text-center text-light p-2">
+        <h2>Nobody has posted any cringe</h2>
+        <a href="/cringe/new" class="link-light">Are you going to ruin that?</a>
+      </div>
+      </c:otherwise>
+      </c:choose>
     </div>
   </body>
 </html>
