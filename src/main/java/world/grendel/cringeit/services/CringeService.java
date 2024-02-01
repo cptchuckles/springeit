@@ -28,11 +28,17 @@ public class CringeService {
     }
 
     public Cringe create(Cringe newCringe, User creator) {
+        if (creator == null) {
+            return null;
+        }
         newCringe.setUser(creator);
         return cringeRepository.save(newCringe);
     }
 
     public Cringe update(Cringe cringe, User editor) {
+        if (editor == null) {
+            return null;
+        }
         if (editor.getId() != cringe.getUser().getId() && !editor.isAdmin()) {
             return null;
         }
