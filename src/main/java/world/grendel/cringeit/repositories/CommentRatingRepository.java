@@ -1,5 +1,7 @@
 package world.grendel.cringeit.repositories;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -19,4 +21,7 @@ public interface CommentRatingRepository extends CrudRepository<CommentRating, C
     @Modifying
     @Query("DELETE FROM CommentRating c WHERE c.user = :user AND c.comment = :comment")
     public void deleteFromUserForComment(@Param("user") User user, @Param("comment") Comment comment);
+
+    @Query("SELECT delta FROM CommentRating c WHERE c.user = :user AND c.comment = :comment")
+    public Optional<Integer> getRatingForCommentByUser(@Param("user") User user, @Param("comment") Comment comment);
 }
