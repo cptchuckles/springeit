@@ -1,8 +1,10 @@
 package world.grendel.cringeit.models;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -69,7 +71,7 @@ public class Comment {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "comment")
-    private List<CommentRating> ratings = new ArrayList<>();
+    private Set<CommentRating> ratings = Collections.emptySet();
 
     public Comment() {
     }
@@ -148,11 +150,11 @@ public class Comment {
         this.updatedAt = new Date();
     }
 
-    public List<CommentRating> getRatings() {
+    public Set<CommentRating> getRatings() {
         return ratings;
     }
 
-    public void setRatings(List<CommentRating> ratings) {
+    public void setRatings(Set<CommentRating> ratings) {
         this.ratings = ratings;
     }
 
