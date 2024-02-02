@@ -1,5 +1,6 @@
 package world.grendel.cringeit.services;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -15,9 +16,11 @@ import world.grendel.cringeit.repositories.CommentRepository;
 @Service
 public class CommentService {
     private final CommentRepository commentRepository;
+	private final CommentRatingService ratingService;
 
-	public CommentService(CommentRepository commentRepository) {
+	public CommentService(CommentRepository commentRepository, CommentRatingService ratingService) {
 		this.commentRepository = commentRepository;
+		this.ratingService = ratingService;
     }
 
     public List<Comment> getAllForCringe(Long cringeId) {
@@ -54,6 +57,23 @@ public class CommentService {
             return null;
         }
         return commentRepository.save(comment);
+    }
+
+    public boolean eraseById(Long commentId, User eraser) {
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+        if (comment == null) {
+            return false;
+        }
+        if (comment.getUser().getId() != eraser.getId() && !eraser.isAdmin()) {
+            return false;
+        }
+        comment.getUser().getComments().remove(comment);
+        comment.setUser(null);
+        comment.getRatings().stream().forEach(rating -> ratingService.delete(rating));
+        comment.setRatings(Collections.emptySet());
+        comment.setContent("message erased");
+        commentRepository.save(comment);
+        return true;
     }
 
     public boolean delete(Comment comment, User deleter) {

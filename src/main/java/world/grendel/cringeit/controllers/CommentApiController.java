@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -129,5 +130,18 @@ public class CommentApiController {
             ratingService.upsert(rating);
         }
         return new ResponseEntity<>(total + delta, HttpStatus.OK);
+    }
+
+    @Transactional
+    @DeleteMapping("/comments/{id}")
+    @AuthenticatedRoute(isApi = true)
+    public ResponseEntity<Boolean> delete(
+        HttpSession session, Model model, User currentUser,
+        @PathVariable("id") Long id
+    ) {
+        if (!commentService.eraseById(id, currentUser)) {
+            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
     }
 }
