@@ -169,6 +169,9 @@ public class CringeController {
         if (cringe == null) {
             return "redirect:/cringe";
         }
+        if (cringe.getWhiners().contains(currentUser)) {
+            return String.format("redirect:/cringe/%d", cringe.getId());
+        }
         model.addAttribute("cringe", cringe);
         return "cringe/whine.jsp";
     }

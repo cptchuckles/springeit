@@ -99,6 +99,10 @@ public class User {
             .reduce(0, (sum, rating) -> sum + rating);
     }
 
+    public Integer getTotalComplaints() {
+        return cringe.stream().map(c -> c.getWhiners().size()).reduce(0, (sum, w) -> sum + w);
+    }
+
     public Long getId() {
         return id;
     }

@@ -18,6 +18,7 @@
             <td><c:out value="${oneUser.getTotalCringe()}" /></td>
             <td><c:out value="${oneUser.email}" /></td>
             <td><c:out value="${oneUser.whines.size()}" /></td>
+            <td><c:out value="${oneUser.getTotalComplaints()}" /></td>
           </tr>
           </c:forEach>
         </tbody>
