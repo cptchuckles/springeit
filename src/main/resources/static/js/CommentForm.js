@@ -1,7 +1,15 @@
 import { html, useState, register } from "./deps.js";
 
 function CommentForm(props) {
-    let {parentComment, cringeId, closeForm, addReply, updateComment, isEditForm} = props;
+    let {
+        cringeId,
+        parentComment,
+        closeForm,
+        addReply,
+        updateComment,
+        isEditForm,
+        addRootComment
+    } = props;
 
     const [content, setContent] = useState(props.content ?? "");
 
@@ -47,6 +55,14 @@ function CommentForm(props) {
                     commentId: data.id,
                     cringeId: Number(cringeId),
                     parentCommentUsername: parentComment.username,
+                    canEdit: true
+                });
+            }
+            else if (addRootComment) {
+                addRootComment({
+                    ...data,
+                    commentId: data.id,
+                    cringeId: Number(cringeId),
                     canEdit: true
                 });
             }

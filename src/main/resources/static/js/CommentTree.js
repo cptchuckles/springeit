@@ -1,8 +1,16 @@
 import { html, useState, useEffect, register } from "./deps.js"
 import CringeComment from "./CringeComment.js";
+import CommentForm from "./CommentForm.js";
 
-function CommentTree({ cringeId }) {
-    const [roots, setRoots] = useState([]);
+function CommentTree({ cringeId, currentUserId }) {
+    const [rootComments, setRoots] = useState([]);
+
+    const addRootComment = (comment) => {
+        setRoots(roots => [comment, ...roots]);
+    }
+
+    const commentForm = new CommentForm({ cringeId, addRootComment });
+
     useEffect(() => {
         fetch(`/api/cringe/${cringeId}/comments`)
             .then(res => {
@@ -12,19 +20,25 @@ function CommentTree({ cringeId }) {
                 return res.json();
             })
             .then(comments => {
-                for (let i = comments.length; i-- > 0;) {
+                for (let i = 0; i < comments.length; i++) {
                     const comment = comments[i];
-                    setRoots(otherComments => [comment, ...otherComments]);
+                    comment.currentUserId = currentUserId;
+                    comment.commentId = comment.id;
+                    if (comment.user?.id == currentUserId) {
+                        comment.canEdit = true;
+                    }
+                    setRoots(roots => [comment, ...roots]);
                 }
             })
             .catch(e => console.error(e));
     }, []);
 
     return html`
+${commentForm}
 <div>
-    ${roots.map(branch => new CringeComment({...branch, commentId: branch.id}))}
+    ${rootComments.map(root => new CringeComment({...root, commentId: root.id}))}
 </div>
 `
 }
 
-register(CommentTree, "comment-tree", ["cringeId"]);
+register(CommentTree, "comment-tree", ["cringeId", "currentUserId"]);
