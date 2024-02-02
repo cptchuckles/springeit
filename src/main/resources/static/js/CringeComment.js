@@ -117,24 +117,9 @@ function CringeComment(props) {
 </div>
     ${replies?.length > 0 && html`
     <div className="border-start border-5" style=${{marginLeft: "1.25rem", paddingLeft: "1.25rem", borderBottomLeftRadius: "2em"}}>
-        ${replies.map(reply => new CringeComment({...reply}))}
+        ${replies.map(reply => new CringeComment({...reply, parentCommentId: props.id, parentCommentUsername: props.user?.username}))}
     </div>
     `}
 `}
-
-register(CringeComment, "cringe-comment", [
-    "commentId",
-    "cringeId",
-    "content",
-    "canEdit",
-    "totalRating",
-    "userId",
-    "username",
-    "parentCommentId",
-    "parentCommentUsername",
-    "votedUp",
-    "votedDown",
-    "replies",
-]);
 
 export default CringeComment;
