@@ -11,8 +11,8 @@ function CringeComment(props) {
     let {
         commentid,
         content, canEdit,
-        userId, username,
-        parentCommentId, parentCommentUsername,
+        userid, username,
+        parentcommentid, parentcommentusername,
     } = props;
 
     const showVote = (did) => did ? "btn-info" : "btn-clear";
@@ -47,13 +47,13 @@ function CringeComment(props) {
 <div className="border border-3 border-info rounded-2 my-2 p-2 d-flex flex-row gap-2">
     <div className="d-flex flex-column gap-1 align-items-center">
         <button className="btn ${votedUp ? "btn-info" : "btn-clear"} rounded-pill fw-bold" onClick=${rateUp}>↑</button>
-        <span>${rating > 0 && "+"}${rating}</span>
+        <strong>${rating > 0 && "+"}${rating}</strong>
         <button className="btn ${votedDown ? "btn-info" : "btn-clear"} rounded-pill fw-bold" onClick=${rateDown}>↓</button>
     </div>
     <div className="col">
         <h6>
-            <a href="/users/${userId}">${username}</a>
-            ${ parentCommentId && `replied to <a href="#comment-${parentCommentId}">${parentCommentUsername}</a>` }
+            <a href="/users/${userid}">${username}</a>
+            ${ parentcommentid && `replied to <a href="#comment-${parentcommentid}">${parentcommentusername}</a>` }
         </h6>
         <p style=${{wordWrap: "break-word", whiteSpace: "pre-line"}}>${content}</p>
     </div>
