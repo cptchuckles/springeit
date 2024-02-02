@@ -3,10 +3,11 @@ import CringeComment from "./CringeComment.js";
 import CommentForm from "./CommentForm.js";
 
 function CommentTree({ cringeId, currentUserId }) {
-    const [rootComments, setRoots] = useState([]);
+    const [rootComments, setRootComments] = useState([]);
 
     const addRootComment = (comment) => {
-        setRoots(roots => [comment, ...roots]);
+        const newComments = [comment, ...rootComments];
+        setRootComments(newComments);
     }
 
     const commentForm = new CommentForm({ cringeId, addRootComment });
@@ -20,15 +21,17 @@ function CommentTree({ cringeId, currentUserId }) {
                 return res.json();
             })
             .then(comments => {
-                for (let i = 0; i < comments.length; i++) {
+                const totalComments = [];
+                for (let i = comments.length; i-- > 0;) {
                     const comment = comments[i];
                     comment.currentUserId = currentUserId;
                     comment.commentId = comment.id;
                     if (comment.user?.id == currentUserId) {
                         comment.canEdit = true;
                     }
-                    setRoots(roots => [comment, ...roots]);
+                    totalComments.push(comment);
                 }
+                setRootComments(totalComments);
             })
             .catch(e => console.error(e));
     }, []);
@@ -36,7 +39,7 @@ function CommentTree({ cringeId, currentUserId }) {
     return html`
 ${commentForm}
 <div>
-    ${rootComments.map(root => new CringeComment({...root, commentId: root.id}))}
+    ${rootComments.map(root => html`<${CringeComment} key=${root.id} ...${{...root, commentId: root.id}} />`)}
 </div>
 `
 }

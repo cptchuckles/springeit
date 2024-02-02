@@ -123,7 +123,7 @@ function CringeComment(props) {
 </div>
     ${replies?.length > 0 && html`
     <div className="border-start border-5" style=${{marginLeft: "1.25rem", paddingLeft: "1.25rem", borderBottomLeftRadius: "2em"}}>
-        ${replies.map(reply => new CringeComment({...reply, parentCommentId: props.id, parentCommentUsername: props.user?.username, currentUserId}))}
+        ${replies.map(reply => html`<${CringeComment} key=${reply.id} ...${{...reply, parentCommentId: props.id, parentCommentUsername: props.user?.username, currentUserId}} />`)}
     </div>
     `}
 `}
