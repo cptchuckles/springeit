@@ -7,6 +7,7 @@ function CommentTree({ cringeId, currentUserId }) {
 
     const addRootComment = (comment) => {
         const newComments = [comment, ...rootComments];
+        document.location.hash = `comment-${comment.id}`;
         setRootComments(newComments);
     }
 
@@ -35,6 +36,12 @@ function CommentTree({ cringeId, currentUserId }) {
             })
             .catch(e => console.error(e));
     }, []);
+
+    useEffect(() => {
+        const hash = document.location.hash;
+        document.location.hash = "";
+        document.location.hash = hash;
+    }, [rootComments]);
 
     return html`
 ${commentForm}

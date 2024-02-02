@@ -55,7 +55,8 @@ function CommentForm(props) {
                     commentId: data.id,
                     cringeId: Number(cringeId),
                     parentCommentUsername: parentComment.username,
-                    canEdit: true
+                    canEdit: true,
+                    takeFocus: true,
                 });
             }
             else if (addRootComment) {
@@ -63,7 +64,8 @@ function CommentForm(props) {
                     ...data,
                     commentId: data.id,
                     cringeId: Number(cringeId),
-                    canEdit: true
+                    canEdit: true,
+                    takeFocus: true,
                 });
             }
             else if (updateComment) {

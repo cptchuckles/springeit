@@ -1,4 +1,4 @@
-import { html, useState, register } from "./deps.js";
+import { html, useState, useEffect, register } from "./deps.js";
 import CommentForm from "./CommentForm.js";
 
 function CommentEditLinks(props) {
@@ -32,6 +32,7 @@ function CringeComment(props) {
         commentId, cringeId, currentUserId, canEdit,
         user, username,
         parentCommentId, parentCommentUsername,
+        takeFocus,
     } = props;
 
     commentId ??= props.id;
@@ -100,6 +101,12 @@ function CringeComment(props) {
         closeForm: closeEditForm,
         updateComment: (newContent) => setContent(newContent),
     });
+
+    useEffect(() => {
+        if (takeFocus) {
+            document.location.hash = `comment-${props.id}`;
+        }
+    }, []);
 
     return html`
 <div id=${`comment-${commentId}`} className="comment border border-3 border-info rounded-2 my-2 p-2 d-flex flex-row gap-2">
