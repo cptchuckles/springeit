@@ -7,6 +7,8 @@ import java.util.Set;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +33,7 @@ import jakarta.validation.constraints.Size;
  * User
  */
 @Entity
+@JsonIgnoreProperties({"email", "passwordHash", "isAdmin", "createdAt", "updatedAt", "cringe", "cringeRatings", "comments", "commentRatings", "whines"})
 @Table(name = "springe_users")
 public class User {
     @Id
