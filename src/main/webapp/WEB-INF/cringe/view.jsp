@@ -8,6 +8,7 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/cringe.css" />
     <title>SpringeIt - Post Cringe</title>
     <%@ include file="../lib/importmap.jsp" %>
     <script type="module" src="/js/CommentForm.js"></script>
@@ -80,11 +81,14 @@
       <c:forEach var="comment" items="${cringe.comments}">
       <cringe-comment
         comment-id="${comment.id}"
+        parent-comment-id="${comment.parentComment.id}"
+        parent-comment-username="${comment.parentComment.user.username}"
+        cringe-id="${cringe.id}"
         user-id="${comment.user.id}"
         username="${comment.user.username}"
         content="${comment.content}"
         rating="${comment.getTotalRating()}"
-        can-edit="${comment.user.id eq currentUser.id}"
+        can-edit="${comment.user.id eq currentUser.id || currentUser.isAdmin()}"
         voted-up="${comment.getRatingByUserId(currentUser.id) gt 0}"
         voted-down="${comment.getRatingByUserId(currentUser.id) lt 0}"
       ></cringe-comment>
