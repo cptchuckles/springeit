@@ -52,6 +52,7 @@ function CommentForm(props) {
             }
             else if (updateComment) {
                 updateComment(data.content);
+                setContent(data.content);
             }
             if (closeForm) {
                 closeForm();
