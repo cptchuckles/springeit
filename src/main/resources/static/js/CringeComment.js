@@ -9,20 +9,20 @@ function CommentEditLinks(props) {
 
 function CringeComment(props) {
     let {
-        commentid,
+        commentId,
         content, canEdit,
-        userid, username,
-        parentcommentid, parentcommentusername,
+        userId, username,
+        parentCommentId, parentCommentUsername,
     } = props;
 
     const showVote = (did) => did ? "btn-info" : "btn-clear";
 
     const [rating, setRating] = useState(Number(props.rating));
-    const [votedUp, setVotedUp] = useState(props.votedup === "true");
-    const [votedDown, setVotedDown] = useState(props.voteddown === "true");
+    const [votedUp, setVotedUp] = useState(props.votedUp === "true");
+    const [votedDown, setVotedDown] = useState(props.votedDown === "true");
 
     const rate = (delta, success) => {
-        fetch(`/api/comments/${commentid}/rate`, {
+        fetch(`/api/comments/${commentId}/rate`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({delta})
@@ -52,8 +52,8 @@ function CringeComment(props) {
     </div>
     <div className="col">
         <h6>
-            <a href="/users/${userid}">${username}</a>
-            ${ parentcommentid && `replied to <a href="#comment-${parentcommentid}">${parentcommentusername}</a>` }
+            <a href="/users/${userId}">${username}</a>
+            ${ parentCommentId && `replied to <a href="#comment-${parentCommentId}">${parentCommentUsername}</a>` }
         </h6>
         <p style=${{wordWrap: "break-word", whiteSpace: "pre-line"}}>${content}</p>
     </div>

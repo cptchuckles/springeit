@@ -79,14 +79,14 @@
 
       <c:forEach var="comment" items="${cringe.comments}">
       <cringe-comment
-        commentId="${comment.id}"
-        userId="${comment.user.id}"
+        comment-id="${comment.id}"
+        user-id="${comment.user.id}"
         username="${comment.user.username}"
         content="${comment.content}"
         rating="${comment.getTotalRating()}"
-        canEdit="${comment.user.id eq currentUser.id}"
-        votedUp="${comment.getRatingByUserId(currentUser.id) gt 0}"
-        votedDown="${comment.getRatingByUserId(currentUser.id) lt 0}"
+        can-edit="${comment.user.id eq currentUser.id}"
+        voted-up="${comment.getRatingByUserId(currentUser.id) gt 0}"
+        voted-down="${comment.getRatingByUserId(currentUser.id) lt 0}"
       ></cringe-comment>
       </c:forEach>
 
