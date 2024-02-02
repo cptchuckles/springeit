@@ -1,9 +1,13 @@
 import { html, useState, register } from "./deps.js";
 
-function CommentForm({parentComment, hiddenElement, cringeId, closeForm}) {
+function CommentForm(props) {
+    let {parentComment, cringeId, closeForm, addReply} = props;
+
     const [content, setContent] = useState("");
 
-    parentComment = parentComment?.props;
+    if (parentComment?.props) {
+        parentComment = parentComment.props;
+    }
 
     const placeholder = parentComment
         ? `Reply to ${parentComment.username}`
@@ -21,21 +25,33 @@ function CommentForm({parentComment, hiddenElement, cringeId, closeForm}) {
         if (parentComment) {
             payload.parentCommentId = parentComment.commentId;
         }
-        console.log(payload);
         fetch(`/api/cringe/${cringeId}/comments`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
         })
-            .then(result => result.json())
-            .then(data => {
-                console.log(data);
-                resetForm();
-                if (closeForm) {
-                    closeForm();
-                }
-            })
-            .catch(e => console.log("can't poast:", e));
+        .then(result => {
+            if (!result.ok) {
+                throw new Error("can't poast");
+            }
+            return result.json()
+        })
+        .then(data => {
+            if (closeForm) {
+                closeForm();
+            }
+            if (addReply) {
+                addReply({
+                    ...data,
+                    commentId: data.id,
+                    cringeId: Number(cringeId),
+                    parentCommentUsername: parentComment.username,
+                    canEdit: true
+                });
+            }
+            resetForm();
+        })
+        .catch(e => console.error(e));
     }
 
     const keydownEventHandler = (ev) => {

@@ -2,24 +2,25 @@ import { html, useState, register } from "./deps.js";
 import CommentForm from "./CommentForm.js";
 
 function CommentEditLinks(props) {
-    const { comment } = props;
+    const { comment, addReply, canEdit } = props;
 
-    const [formOpen, openForm] = useState(false);
-
+    const [showForm, setShowForm] = useState(false);
     const form = new CommentForm({
         parentComment: comment,
-        closeForm: () => openForm(false)
+        cringeId: comment.cringeId,
+        addReply: addReply,
+        closeForm: () => setShowForm(false)
     });
+
     const showReplyForm = (ev) => {
         ev.preventDefault();
-        form.props.hiddenElement = ev.target.parentElement;
-        openForm(true);
+        setShowForm(true);
     }
 
-    return formOpen ? html`${form}` : html`
+    return showForm ? form : html`
 <span className="d-flex flex-row gap-2 justify-content-end" style=${{fontSize: "0.6em"}}>
     <a style=${{cursor: "pointer"}} onClick=${showReplyForm} className="link-dark fw-bold">Reply</a>
-    ${ comment.props.canEdit === "true" && html`
+    ${ canEdit && html`
         <a href="#" className="link-dark fw-bold">Edit</a>
         <a href="#" className="link-dark fw-bold">Delete</a>
     `}
@@ -30,14 +31,17 @@ function CringeComment(props) {
     let {
         commentId, cringeId,
         content, canEdit,
-        userId, username,
+        user, userId, username,
         parentCommentId, parentCommentUsername,
-        replies,
     } = props;
 
-    replies ??= [];
+    userId ??= user?.id ?? console.error("Comment spawned without userId");
+    username ??= user?.username ?? console.error("Comment spawned without username");
+    userId = Number(userId);
+    cringeId = Number(cringeId);
 
-    const [rating, setRating] = useState(Number(props.rating));
+    const [replies, setReplies] = useState(props.replies ?? []);
+    const [rating, setRating] = useState(Number(props.totalRating));
     const [votedUp, setVotedUp] = useState(props.votedUp === "true");
     const [votedDown, setVotedDown] = useState(props.votedDown === "true");
 
@@ -63,6 +67,11 @@ function CringeComment(props) {
         setVotedDown(down => !down);
     });
 
+    const addReply = (reply) => setReplies(oldReplies => [...oldReplies, reply]);
+
+    const comment = {...props, commentId, user, userId, cringeId, username};
+    const links = new CommentEditLinks({ comment, addReply, canEdit: props.canEdit });
+
     return html`
 <div id=${`comment-${commentId}`} className="comment border border-3 border-info rounded-2 my-2 p-2 d-flex flex-row gap-2">
     <div className="d-flex flex-column gap-1 align-items-center">
@@ -76,7 +85,7 @@ function CringeComment(props) {
             ${ parentCommentId && html` replied to <a href="#comment-${parentCommentId}">${parentCommentUsername}</a>` }
         </strong>
         <p style=${{wordWrap: "break-word", whiteSpace: "pre-line", flex: 1}}>${content}</p>
-        ${new CommentEditLinks({comment: this})}
+        ${links}
     </div>
 </div>
     ${replies?.length > 0 && html`
@@ -91,7 +100,7 @@ register(CringeComment, "cringe-comment", [
     "cringeId",
     "content",
     "canEdit",
-    "rating",
+    "totalRating",
     "userId",
     "username",
     "parentCommentId",
