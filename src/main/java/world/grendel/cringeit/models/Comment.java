@@ -43,8 +43,8 @@ public class Comment {
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
-    @OneToMany(mappedBy = "parentComment")
-    private List<Comment> replies;
+	@OneToMany(mappedBy = "parentComment")
+    private List<Comment> replies = new ArrayList<>();
 
     @NotBlank
     @Length(max = 1024)
@@ -130,7 +130,7 @@ public class Comment {
 
     @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
     @JsonIdentityReference(alwaysAsId=true)
-    @JsonProperty("cringe_id")
+    @JsonProperty("cringeId")
     public Cringe getCringe() {
         return cringe;
     }
@@ -158,7 +158,7 @@ public class Comment {
 
     @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
     @JsonIdentityReference(alwaysAsId=true)
-    @JsonProperty("parent_comment_id")
+    @JsonProperty("parentCommentId")
     public Comment getParentComment() {
         return parentComment;
     }

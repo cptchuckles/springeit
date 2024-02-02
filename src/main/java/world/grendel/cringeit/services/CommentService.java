@@ -42,6 +42,13 @@ public class CommentService {
         return commentRepository.save(newComment);
     }
 
+    public Comment addReply(Comment parentComment, Comment reply) {
+        parentComment.getReplies().add(reply);
+        commentRepository.save(parentComment);
+        reply.setParentComment(parentComment);
+        return commentRepository.save(reply);
+    }
+
     public Comment update(Comment comment, User editor) {
         if (!editor.isAdmin() && comment.getUser().getId() != editor.getId()) {
             return null;

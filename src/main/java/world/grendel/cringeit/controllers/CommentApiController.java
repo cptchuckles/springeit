@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 import world.grendel.cringeit.annotation.AuthenticatedRoute;
+import world.grendel.cringeit.dataobjects.CommentDTO;
 import world.grendel.cringeit.models.Comment;
 import world.grendel.cringeit.models.CommentRating;
 import world.grendel.cringeit.models.Cringe;
@@ -56,13 +57,22 @@ public class CommentApiController {
     public ResponseEntity<Comment> create(
         HttpSession session, Model model, User currentUser,
         @PathVariable("cringeId") Long cringeId,
-        @RequestBody Comment newComment
+        @RequestBody CommentDTO newCommentData
     ) {
         Cringe cringe = cringeService.getById(cringeId);
         if (cringe == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        Comment newComment = new Comment();
+        newComment.setContent(newCommentData.getContent());
         Comment savedComment = commentService.create(newComment, currentUser, cringe);
+        Long parentCommentId = newCommentData.getParentCommentId();
+        if (parentCommentId != null) {
+            Comment parentComment = commentService.getById(parentCommentId);
+            if (parentComment != null) {
+                commentService.addReply(parentComment, savedComment);
+            }
+        }
         return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
     }
 
