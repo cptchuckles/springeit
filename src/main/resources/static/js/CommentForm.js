@@ -10,14 +10,23 @@ function CommentForm({parentCommentId, parentUsername, hiddenElement, cringeId})
 
     const placeholder = parentUsername ? `Reply to ${parentUsername}` : "Leave a Comment";
 
-    const submitForm = async (ev) => {
+    const resetForm = () => {
+        setContent("");
+    }
+
+    const submitForm = (ev) => {
         ev.preventDefault();
-        const response = await fetch(`/api/cringe/${cringeId}/comments`, {
+        fetch(`/api/cringe/${cringeId}/comments`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ content }),
-        });
-        console.log(response.status, await response.json());
+        })
+            .then(result => result.json())
+            .then(data => {
+                console.log(data);
+                resetForm();
+            })
+            .catch(e => console.log("can't poast:", e));
     }
 
     return html`
@@ -41,3 +50,5 @@ function CommentForm({parentCommentId, parentUsername, hiddenElement, cringeId})
 }
 
 register(CommentForm, "comment-form", ["cringeId"]);
+
+export default CommentForm;
