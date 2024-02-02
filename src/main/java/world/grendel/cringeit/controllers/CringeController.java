@@ -68,6 +68,16 @@ public class CringeController {
         return "cringe/new.jsp";
     }
 
+    @GetMapping("/whine-confirmation")
+    @AuthenticatedRoute
+    public String confirmWhine(HttpSession session) {
+        if (session.getAttribute("whine") == null) {
+            return "redirect:/cringe";
+        }
+        session.removeAttribute("whine");
+        return "cringe/whineConfirmation.jsp";
+    }
+
     @PostMapping
     @AuthenticatedRoute
     public String create(
@@ -147,5 +157,38 @@ public class CringeController {
             ratingService.upsert(rating);
         }
         return String.format("redirect:/cringe/%d", id);
+    }
+
+    @GetMapping("/{id}/whine")
+    @AuthenticatedRoute
+    public String whine(
+        HttpSession session, Model model, User currentUser,
+        @PathVariable("id") Long id
+    ) {
+        Cringe cringe = cringeService.getById(id);
+        if (cringe == null) {
+            return "redirect:/cringe";
+        }
+        model.addAttribute("cringe", cringe);
+        return "cringe/whine.jsp";
+    }
+
+    @PostMapping("/{id}/whine")
+    @AuthenticatedRoute
+    public String addWhine(
+        HttpSession session, Model model, User currentUser,
+        @PathVariable("id") Long id,
+        @RequestParam("iAmABaby") Boolean whinerIsABaby
+    ) {
+        if (!whinerIsABaby) {
+            return "redirect:/cringe";
+        }
+        Cringe cringe = cringeService.getById(id);
+        if (cringe == null) {
+            return "redirect:/cringe";
+        }
+        cringeService.addWhineByUser(cringe, currentUser);
+        session.setAttribute("whine", cringe.getId());
+        return "redirect:/cringe/whine-confirmation";
     }
 }

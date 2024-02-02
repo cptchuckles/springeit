@@ -6,7 +6,8 @@
             <th width="20%">Date Joined</th>
             <th width="10%">Cringe</th>
             <th width="30%">Email</th>
-            <th width="20%">Actions</th>
+            <th width="10%">Whines Made</th>
+            <th width="10%">Whines Got</th>
           </tr>
         </thead>
         <tbody>
@@ -16,6 +17,7 @@
             <td><fmt:formatDate value="${oneUser.createdAt}" pattern="d MMM, yyyy" /></td>
             <td><c:out value="${oneUser.getTotalCringe()}" /></td>
             <td><c:out value="${oneUser.email}" /></td>
+            <td><c:out value="${oneUser.whines.size()}" /></td>
           </tr>
           </c:forEach>
         </tbody>

@@ -36,7 +36,12 @@ public class CringeService {
         return cringeRepository.save(newCringe);
     }
 
-	public Cringe update(Cringe cringe, User editor) {
+    public Cringe addWhineByUser(Cringe cringe, User whiner) {
+        cringe.getWhiners().add(whiner);
+        return cringeRepository.save(cringe);
+    }
+
+    public Cringe update(Cringe cringe, User editor) {
         if (editor == null) {
             return null;
         }
@@ -63,5 +68,5 @@ public class CringeService {
         return description
             .replaceAll("(\\r\\n|\\r|\\n){2,}", "\n\n")
             .replaceAll("( {2,}|\\t+)", "  ");
-	}
+    }
 }
