@@ -43,9 +43,6 @@ public class CommentService {
     }
 
     public Comment update(Comment comment, User editor) {
-        if (comment == null) {
-            return null;
-        }
         if (!editor.isAdmin() && comment.getUser().getId() != editor.getId()) {
             return null;
         }

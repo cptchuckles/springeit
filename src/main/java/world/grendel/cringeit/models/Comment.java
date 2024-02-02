@@ -1,5 +1,6 @@
 package world.grendel.cringeit.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class Comment {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "comment")
-    private List<CommentRating> ratings;
+    private List<CommentRating> ratings = new ArrayList<>();
 
     public Comment() {
     }
@@ -77,6 +78,14 @@ public class Comment {
         return ratings.stream()
             .map(rating -> rating.getDelta())
             .reduce(0, (sum, rating) -> sum + rating);
+    }
+
+    public Integer getRatingByUserId(Long voterId) {
+        return ratings.stream()
+            .filter(r -> r.getUser().getId() == voterId)
+            .findFirst()
+            .orElse(new CommentRating())
+            .getDelta();
     }
 
     public Long getId() {

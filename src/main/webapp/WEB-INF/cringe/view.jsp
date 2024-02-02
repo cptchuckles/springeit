@@ -11,6 +11,7 @@
     <title>SpringeIt - Post Cringe</title>
     <%@ include file="../lib/importmap.jsp" %>
     <script type="module" src="/js/CommentForm.js"></script>
+    <script type="module" src="/js/CringeComment.js"></script>
   </head>
   <body>
     <%@ include file="../insert/header.jsp" %>
@@ -75,6 +76,19 @@
 
       <!-- comments go here lmao -->
       <comment-form cringe-id="${cringe.id}"></comment-form>
+
+      <c:forEach var="comment" items="${cringe.comments}">
+      <cringe-comment
+        commentId="${comment.id}"
+        userId="${comment.user.id}"
+        username="${comment.user.username}"
+        content="${comment.content}"
+        rating="${comment.getTotalRating()}"
+        canEdit="${comment.user.id eq currentUser.id}"
+        votedUp="${comment.getRatingByUserId(currentUser.id) gt 0}"
+        votedDown="${comment.getRatingByUserId(currentUser.id) lt 0}"
+      ></cringe-comment>
+      </c:forEach>
 
       <div class="d-flex flex-row w-100 mt-5 py-5 border-top border-secondary align-items-baseline">
         <div class="col">

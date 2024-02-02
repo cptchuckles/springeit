@@ -28,9 +28,15 @@ public class CommentRating {
 
     @Range(min = -1, max = 1)
     @Column(columnDefinition = "TINYINT")
-    private Integer delta;
+    private Integer delta = 0;
 
     public CommentRating() {
+    }
+
+    public CommentRating(User user, Comment comment, Integer delta) {
+        this.user = user;
+        this.comment = comment;
+        this.delta = delta;
     }
 
     public User getUser() {
