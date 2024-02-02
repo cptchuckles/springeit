@@ -1,9 +1,9 @@
 import { html, useState, register } from "./deps.js";
 
 function CommentForm(props) {
-    let {parentComment, cringeId, closeForm, addReply} = props;
+    let {parentComment, cringeId, closeForm, addReply, updateComment, isEditForm} = props;
 
-    const [content, setContent] = useState("");
+    const [content, setContent] = useState(props.content ?? "");
 
     if (parentComment?.props) {
         parentComment = parentComment.props;
@@ -12,8 +12,6 @@ function CommentForm(props) {
     const placeholder = parentComment
         ? `Reply to ${parentComment.username}`
         : "Leave a Comment";
-
-    cringeId ??= parentComment?.cringeId ?? console.error("CommentForm instantiated without a cringeId");
 
     const resetForm = () => {
         setContent("");
@@ -25,8 +23,13 @@ function CommentForm(props) {
         if (parentComment) {
             payload.parentCommentId = parentComment.commentId;
         }
-        fetch(`/api/cringe/${cringeId}/comments`, {
-            method: "POST",
+
+        const uri = isEditForm
+            ? `/api/comments/${props.commentId}`
+            : `/api/cringe/${cringeId}/comments`;
+
+        fetch(uri, {
+            method: isEditForm ? "PUT" : "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
         })
@@ -37,9 +40,7 @@ function CommentForm(props) {
             return result.json()
         })
         .then(data => {
-            if (closeForm) {
-                closeForm();
-            }
+            resetForm();
             if (addReply) {
                 addReply({
                     ...data,
@@ -49,7 +50,12 @@ function CommentForm(props) {
                     canEdit: true
                 });
             }
-            resetForm();
+            else if (updateComment) {
+                updateComment(data.content);
+            }
+            if (closeForm) {
+                closeForm();
+            }
         })
         .catch(e => console.error(e));
     }

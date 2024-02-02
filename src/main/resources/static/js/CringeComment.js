@@ -2,7 +2,7 @@ import { html, useState, register } from "./deps.js";
 import CommentForm from "./CommentForm.js";
 
 function CommentEditLinks(props) {
-    const { comment, addReply, canEdit } = props;
+    const { comment, addReply, canEdit, showEditForm } = props;
 
     const [showForm, setShowForm] = useState(false);
     const form = new CommentForm({
@@ -21,7 +21,7 @@ function CommentEditLinks(props) {
 <span className="d-flex flex-row gap-2 justify-content-end" style=${{fontSize: "0.6em"}}>
     <a style=${{cursor: "pointer"}} onClick=${showReplyForm} className="link-dark fw-bold">Reply</a>
     ${ canEdit && html`
-        <a href="#" className="link-dark fw-bold">Edit</a>
+        <a style=${{cursor: "pointer"}} onClick=${showEditForm} className="link-dark fw-bold">Edit</a>
         <a href="#" className="link-dark fw-bold">Delete</a>
     `}
 </span>
@@ -29,8 +29,7 @@ function CommentEditLinks(props) {
 
 function CringeComment(props) {
     let {
-        commentId, cringeId,
-        content, canEdit,
+        commentId, cringeId, canEdit,
         user, userId, username,
         parentCommentId, parentCommentUsername,
     } = props;
@@ -40,10 +39,15 @@ function CringeComment(props) {
     userId = Number(userId);
     cringeId = Number(cringeId);
 
+    const [content, setContent] = useState(props.content ?? "");
     const [replies, setReplies] = useState(props.replies ?? []);
     const [rating, setRating] = useState(Number(props.totalRating));
     const [votedUp, setVotedUp] = useState(props.votedUp === "true");
     const [votedDown, setVotedDown] = useState(props.votedDown === "true");
+
+    const [editing, setEditing] = useState(false);
+    const showEditForm = () => setEditing(true);
+    const closeEditForm = () => setEditing(false);
 
     const rate = (delta, success) => {
         fetch(`/api/comments/${commentId}/rate`, {
@@ -70,7 +74,14 @@ function CringeComment(props) {
     const addReply = (reply) => setReplies(oldReplies => [...oldReplies, reply]);
 
     const comment = {...props, commentId, user, userId, cringeId, username};
-    const links = new CommentEditLinks({ comment, addReply, canEdit: props.canEdit });
+    const links = new CommentEditLinks({ comment, addReply, canEdit, showEditForm });
+
+    const editForm = new CommentForm({
+        ...comment,
+        isEditForm: true,
+        closeForm: closeEditForm,
+        updateComment: (newContent) => setContent(newContent),
+    });
 
     return html`
 <div id=${`comment-${commentId}`} className="comment border border-3 border-info rounded-2 my-2 p-2 d-flex flex-row gap-2">
@@ -80,12 +91,14 @@ function CringeComment(props) {
         <button className="btn ${votedDown ? "btn-info" : "btn-clear"} rounded-pill fw-bold" onClick=${rateDown}>↓</button>
     </div>
     <div className="col d-flex flex-column">
-        <strong style=${{fontSize: ".8em"}}>
+        <strong style=${{fontSize: ".8em"}} className="mb-2">
             <a href="/users/${userId}">${username}</a>
             ${ parentCommentId && html` replied to <a href="#comment-${parentCommentId}">${parentCommentUsername}</a>` }
         </strong>
+        ${ editing ? editForm : html`
         <p style=${{wordWrap: "break-word", whiteSpace: "pre-line", flex: 1}}>${content}</p>
         ${links}
+        `}
     </div>
 </div>
     ${replies?.length > 0 && html`
