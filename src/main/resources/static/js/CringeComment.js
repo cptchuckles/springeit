@@ -29,22 +29,28 @@ function CommentEditLinks(props) {
 
 function CringeComment(props) {
     let {
-        commentId, cringeId, canEdit,
+        commentId, cringeId, currentUserId, canEdit,
         user, username,
         parentCommentId, parentCommentUsername,
     } = props;
 
+    commentId ??= props.id;
     cringeId = Number(cringeId);
 
     username ??= user?.username ?? "anon";
+
+    const userVoteDelta = () => {
+        return props.ratings.filter(r => r.user.id == currentUserId).reduce((acc, r) => acc + r.delta, 0);
+    }
 
     const [userId, setUserId] = useState(Number(props.userId ?? props.user?.id) || null);
     const [content, setContent] = useState(props.content ?? "");
     const [replies, setReplies] = useState(props.replies ?? []);
     const [rating, setRating] = useState(Number(props.totalRating));
-    const [votedUp, setVotedUp] = useState(props.votedUp === "true");
-    const [votedDown, setVotedDown] = useState(props.votedDown === "true");
+    const [votedUp, setVotedUp] = useState(userVoteDelta() > 0);
+    const [votedDown, setVotedDown] = useState(userVoteDelta() < 0);
 
+    canEdit ||= currentUserId == user?.id;
     const [editing, setEditing] = useState(false);
     const showEditForm = () => setEditing(true);
     const closeEditForm = () => setEditing(false);
@@ -117,7 +123,7 @@ function CringeComment(props) {
 </div>
     ${replies?.length > 0 && html`
     <div className="border-start border-5" style=${{marginLeft: "1.25rem", paddingLeft: "1.25rem", borderBottomLeftRadius: "2em"}}>
-        ${replies.map(reply => new CringeComment({...reply, parentCommentId: props.id, parentCommentUsername: props.user?.username}))}
+        ${replies.map(reply => new CringeComment({...reply, parentCommentId: props.id, parentCommentUsername: props.user?.username, currentUserId}))}
     </div>
     `}
 `}

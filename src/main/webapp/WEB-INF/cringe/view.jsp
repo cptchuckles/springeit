@@ -77,9 +77,7 @@
       </div>
 
       <!-- comments go here lmao -->
-      <comment-form cringe-id="${cringe.id}"></comment-form>
-
-      <comment-tree cringe-id="${cringe.id}"></comment-tree>
+      <comment-tree cringe-id="${cringe.id}" current-user-id="${currentUser.id}"></comment-tree>
 
       <div class="d-flex flex-row w-100 mt-5 py-5 border-top border-secondary align-items-baseline">
         <div class="col">

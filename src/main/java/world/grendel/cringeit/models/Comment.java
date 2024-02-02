@@ -68,7 +68,6 @@ public class Comment {
     @JoinColumn(name = "cringe_id")
     private Cringe cringe;
 
-    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "comment")
     private Set<CommentRating> ratings = Collections.emptySet();
 
