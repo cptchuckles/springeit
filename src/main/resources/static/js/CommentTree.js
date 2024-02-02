@@ -2,7 +2,7 @@ import { html, useState, useEffect, register } from "./deps.js"
 import CringeComment from "./CringeComment.js";
 import CommentForm from "./CommentForm.js";
 
-function CommentTree({ cringeId, currentUserId }) {
+function CommentTree({ cringeId, currentUserId, currentUserAdmin }) {
     const [rootComments, setRootComments] = useState([]);
 
     const addRootComment = (comment) => {
@@ -26,10 +26,8 @@ function CommentTree({ cringeId, currentUserId }) {
                 for (let i = comments.length; i-- > 0;) {
                     const comment = comments[i];
                     comment.currentUserId = currentUserId;
+                    comment.currentUserAdmin = currentUserAdmin == "true";
                     comment.commentId = comment.id;
-                    if (comment.user?.id == currentUserId) {
-                        comment.canEdit = true;
-                    }
                     totalComments.push(comment);
                 }
                 setRootComments(totalComments);
@@ -46,9 +44,9 @@ function CommentTree({ cringeId, currentUserId }) {
     return html`
 ${commentForm}
 <div>
-    ${rootComments.map(root => html`<${CringeComment} key=${root.id} ...${{...root, commentId: root.id}} />`)}
+    ${rootComments.map(comment => html`<${CringeComment} key=${comment.id} ...${{...comment, commentId: comment.id}} />`)}
 </div>
 `
 }
 
-register(CommentTree, "comment-tree", ["cringeId", "currentUserId"]);
+register(CommentTree, "comment-tree", ["cringeId", "currentUserId", "currentUserAdmin"]);

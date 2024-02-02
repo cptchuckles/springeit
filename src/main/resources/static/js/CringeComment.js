@@ -18,7 +18,7 @@ function CommentEditLinks(props) {
     }
 
     return showForm ? form : html`
-<span className="d-flex flex-row gap-2 justify-content-end" style=${{fontSize: "0.6em"}}>
+<span className="d-flex flex-row gap-2 justify-content-end" style=${{fontSize: "0.8em"}}>
     <a style=${{cursor: "pointer"}} onClick=${showReplyForm} className="link-dark fw-bold">Reply</a>
     ${ canEdit && html`
         <a style=${{cursor: "pointer"}} onClick=${showEditForm} className="link-dark fw-bold">Edit</a>
@@ -29,7 +29,7 @@ function CommentEditLinks(props) {
 
 function CringeComment(props) {
     let {
-        commentId, cringeId, currentUserId, canEdit,
+        commentId, cringeId, currentUserId, currentUserAdmin, canEdit,
         user, username,
         parentCommentId, parentCommentUsername,
         takeFocus,
@@ -51,7 +51,7 @@ function CringeComment(props) {
     const [votedUp, setVotedUp] = useState(userVoteDelta() > 0);
     const [votedDown, setVotedDown] = useState(userVoteDelta() < 0);
 
-    canEdit ||= currentUserId == user?.id;
+    canEdit ||= ((currentUserId == user?.id) || currentUserAdmin)
     const [editing, setEditing] = useState(false);
     const showEditForm = () => setEditing(true);
     const closeEditForm = () => setEditing(false);
@@ -130,7 +130,7 @@ function CringeComment(props) {
 </div>
     ${replies?.length > 0 && html`
     <div className="border-start border-5" style=${{marginLeft: "1.25rem", paddingLeft: "1.25rem", borderBottomLeftRadius: "2em"}}>
-        ${replies.map(reply => html`<${CringeComment} key=${reply.id} ...${{...reply, parentCommentId: props.id, parentCommentUsername: props.user?.username, currentUserId}} />`)}
+        ${replies.map(reply => html`<${CringeComment} key=${reply.id} ...${{...reply, parentCommentId: props.id, parentCommentUsername: props.user?.username, currentUserId, currentUserAdmin}} />`)}
     </div>
     `}
 `}

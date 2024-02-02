@@ -77,7 +77,11 @@
       </div>
 
       <!-- comments go here lmao -->
-      <comment-tree cringe-id="${cringe.id}" current-user-id="${currentUser.id}"></comment-tree>
+      <comment-tree
+        cringe-id="${cringe.id}"
+        current-user-id="${currentUser.id}"
+        current-user-admin="${currentUser.isAdmin()}"
+      ></comment-tree>
 
       <div class="d-flex flex-row w-100 mt-5 py-5 border-top border-secondary align-items-baseline">
         <div class="col">
