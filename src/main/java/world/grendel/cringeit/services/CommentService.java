@@ -24,7 +24,9 @@ public class CommentService {
     }
 
     public List<Comment> getAllForCringe(Long cringeId) {
-        return commentRepository.findAllByCringeId(cringeId);
+        return commentRepository.findAllByCringeIdOrderByCreatedAtAsc(cringeId).stream()
+            .filter(c -> c.getParentComment() == null)
+            .toList();
     }
 
     public List<Comment> getAllForUser(Long userId) {

@@ -14,5 +14,7 @@ import world.grendel.cringeit.models.Comment;
 public interface CommentRepository extends CrudRepository<Comment, Long> {
     public List<Comment> findAll();
     public List<Comment> findAllByCringeId(Long cringeId);
+    public List<Comment> findAllByCringeIdOrderByCreatedAtDesc(Long cringeId);
+    public List<Comment> findAllByCringeIdOrderByCreatedAtAsc(Long cringeId);
     public List<Comment> findAllByUserId(Long userId);
 }
