@@ -87,7 +87,7 @@ function CommentForm(props) {
         ></textarea>
         <p className="d-flex flex-row gap-2">
             <input type="submit" value="Submit" class="btn btn-success" />
-            ${ parentComment && html`
+            ${ closeForm && html`
             <button type="button" onClick=${closeForm} class="btn btn-secondary">Cancel</button>
             ` }
         </p>
