@@ -97,7 +97,7 @@ function CommentForm(props) {
             id=${parentComment ? `reply-${parentComment.commentId}` : undefined }
             name="content"
             rows="4"
-            class="form-control mb-2"
+            className=${`form-control border ${closeForm ? "border-1 border-dark" : "border-5 border-primary"} mb-2`}
             placeholder="${placeholder}"
             value=${content}
             onKeyDown=${keydownEventHandler}
