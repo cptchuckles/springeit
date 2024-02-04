@@ -13,17 +13,19 @@ function CommentForm(props) {
 
     const [content, setContent] = useState(props.content ?? "");
 
-    if (parentComment?.props) {
-        parentComment = parentComment.props;
-    }
+    parentComment = parentComment?.props ?? parentComment;
 
     const placeholder = parentComment
         ? `Reply to ${parentComment.username}`
         : "Leave a Comment";
 
-    const resetForm = () => {
-        setContent("");
-    }
+    const buttonTitle = closeForm ?
+        (isEditForm ? "Save" : "Add Reply")
+        : "Add Comment";
+
+    const buttonColor = isEditForm ? "btn-primary" : "btn-success";
+
+    const resetForm = () => setContent("");
 
     const submitForm = (ev) => {
         ev.preventDefault();
@@ -104,7 +106,7 @@ function CommentForm(props) {
             onChange=${ev => setContent(ev.target.value)}
         ></textarea>
         <p className="d-flex flex-row gap-2">
-            <input type="submit" value="Submit" class="btn btn-success" />
+            <input type="submit" value=${buttonTitle} class=${`btn ${buttonColor}`} />
             ${ closeForm && html`
             <button type="button" onClick=${closeForm} class="btn btn-secondary">Cancel</button>
             ` }
