@@ -22,7 +22,7 @@ function CommentEditLinks(props) {
     <div style="text-align: center">
         <h4>Delete this comment?</h4>
         <p>
-            <button className="btn btn-danger mx-2" onClick=${deleteComment}>Confirm</button>
+            <button className="btn btn-danger mx-2" onClick=${deleteComment}>Delete</button>
             <button className="btn btn-secondary mx-2" onClick=${hideDeletePrompt}>Cancel</button>
         </p>
     </div>
