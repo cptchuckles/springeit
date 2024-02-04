@@ -155,8 +155,11 @@ function CringeComment(props) {
     </div>
 </div>
     ${replies?.length > 0 && html`
-    <div className="border-start border-5" style=${{marginLeft: "1.25rem", paddingLeft: "1.25rem", borderBottomLeftRadius: "2em"}}>
-        ${replies.map(reply => html`<${CringeComment} key=${reply.id} ...${{...reply, parentCommentId: props.id, parentCommentUsername: props.user?.username, currentUserId, currentUserAdmin}} />`)}
+    <div class="d-flex flex-row justify-content-stretch" style=${{paddingLeft: "1.25rem"}}>
+        <a href="#comment-${commentId}" className="border-start border-5" style=${{display: "block", width: "1.25rem", borderBottomLeftRadius: "2em"}}></a>
+        <div style=${{flex: "1"}}>
+            ${replies.map(reply => html`<${CringeComment} key=${reply.id} ...${{...reply, parentCommentId: props.id, parentCommentUsername: props.user?.username, currentUserId, currentUserAdmin}} />`)}
+        </div>
     </div>
     `}
 `}
