@@ -1,3 +1,19 @@
 .comment:target {
     background-color: #ffd;
 }
+
+.vote {
+    display: inline-block;
+    height: .75em;
+    width: .75em;
+    border-top: 3px solid black;
+    border-right: 3px solid black;
+}
+
+.vote.vote-up {
+    transform: rotate(-45deg);
+}
+
+.vote.vote-down {
+    transform: rotate(135deg);
+}

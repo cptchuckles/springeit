@@ -134,9 +134,13 @@ function CringeComment(props) {
 <div id=${`comment-${commentId}`} className="comment border border-3 border-info rounded-2 my-2 p-2 d-flex flex-row gap-2">
     ${ userId && html`
     <div className="d-flex flex-column gap-1 align-items-center">
-        <button className="btn ${votedUp ? "btn-info" : "btn-clear"} rounded-pill fw-bold" onClick=${rateUp}>↑</button>
+        <button className="btn ${votedUp ? "btn-info" : "btn-clear"} rounded-pill fw-bold" onClick=${rateUp}>
+            <span class="vote vote-up"></span>
+        </button>
         <strong>${rating > 0 && "+"}${rating}</strong>
-        <button className="btn ${votedDown ? "btn-info" : "btn-clear"} rounded-pill fw-bold" onClick=${rateDown}>↓</button>
+        <button className="btn ${votedDown ? "btn-info" : "btn-clear"} rounded-pill fw-bold" onClick=${rateDown}>
+            <span class="vote vote-down"></span>
+        </button>
     </div>
     `}
     <div className="col d-flex flex-column">
