@@ -92,8 +92,17 @@ public class CommentService {
         if (comment == null) {
             return false;
         }
-        if (!deleter.isAdmin() && comment.getUser().getId() != deleter.getId()) {
+        if (!deleter.isAdmin() && comment.getUser() != null && comment.getUser().getId() != deleter.getId()) {
             return false;
+        }
+        Comment parentComment = comment.getParentComment();
+        if (parentComment != null && parentComment.getUser() == null) {
+            var parentReplies = parentComment.getReplies();
+            parentReplies.remove(comment);
+            commentRepository.save(parentComment);
+            if (parentReplies.size() == 0) {
+                delete(parentComment, deleter);
+            }
         }
         commentRepository.delete(comment);
         return true;
