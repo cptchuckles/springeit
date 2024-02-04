@@ -1,7 +1,7 @@
 import { html, useState, useEffect } from "./deps.js";
 import CommentForm from "./CommentForm.js";
 
-function CommentEditLinks(props) {
+function CommentControlLinks(props) {
     const { comment, addReply, canEdit, showEditForm, deleteComment } = props;
 
     const [showForm, setShowForm] = useState(false);
@@ -115,7 +115,7 @@ function CringeComment(props) {
     }
 
     const comment = {...props, commentId, user, userId, cringeId, username};
-    const links = new CommentEditLinks({ comment, addReply, canEdit, showEditForm, deleteComment });
+    const commentControlLinks = new CommentControlLinks({ comment, addReply, canEdit, showEditForm, deleteComment });
 
     const editForm = new CommentForm({
         ...comment,
@@ -131,36 +131,49 @@ function CringeComment(props) {
     }, []);
 
     return html`
-<div id=${`comment-${commentId}`} className="comment border border-3 border-info rounded-2 my-2 p-2 d-flex flex-row gap-2">
-    ${ userId && html`
-    <div className="d-flex flex-column gap-1 align-items-center">
-        <button className="btn ${votedUp ? "btn-info" : "btn-clear"} rounded-pill fw-bold" onClick=${rateUp}>
-            <span class="vote vote-up"></span>
-        </button>
-        <strong>${rating > 0 && "+"}${rating}</strong>
-        <button className="btn ${votedDown ? "btn-info" : "btn-clear"} rounded-pill fw-bold" onClick=${rateDown}>
-            <span class="vote vote-down"></span>
-        </button>
-    </div>
-    `}
-    <div className="col d-flex flex-column">
-        <strong style=${{fontSize: ".8em"}} className="mb-2">
-            ${userId ? html`<a href="/users/${userId}">${username}</a>` : html`<em>deleted comment</em>`}
-            ${ parentCommentId && html` replied to ${parentCommentUsername ? html`<a href="#comment-${parentCommentId}">${parentCommentUsername}</a>` : "deleted comment"}` }
-        </strong>
-        ${ userId && (editing ? editForm : html`
-        <p style=${{wordWrap: "break-word", whiteSpace: "pre-line", flex: 1}}>${content}</p>
-        ${links}
-        `)}
-    </div>
-</div>
-    ${replies?.length > 0 && html`
-    <div class="d-flex flex-row justify-content-stretch" style=${{paddingLeft: "1.25rem"}}>
-        <a href="#comment-${commentId}" className="border-start border-5" style=${{display: "block", width: "1.25rem", borderBottomLeftRadius: "2em"}}></a>
-        <div style=${{flex: "1"}}>
-            ${replies.map(reply => html`<${CringeComment} key=${reply.id} ...${{...reply, parentCommentId: props.id, parentCommentUsername: props.user?.username, currentUserId, currentUserAdmin}} />`)}
+    <div id=${`comment-${commentId}`} className="comment border border-3 border-info rounded-2 mt-2 p-2 d-flex flex-row gap-2">
+        ${ userId && html`
+        <div className="d-flex flex-column gap-1 align-items-center">
+            <button className="btn ${votedUp ? "btn-info" : "btn-clear"} rounded-pill fw-bold" onClick=${rateUp}>
+                <span class="vote vote-up"></span>
+            </button>
+            <strong>${rating > 0 && "+"}${rating}</strong>
+            <button className="btn ${votedDown ? "btn-info" : "btn-clear"} rounded-pill fw-bold" onClick=${rateDown}>
+                <span class="vote vote-down"></span>
+            </button>
+        </div>
+        `}
+        <div className="col d-flex flex-column">
+            <strong style=${{fontSize: ".8em"}} className="mb-2">
+                ${userId ? html`<a href="/users/${userId}">${username}</a>` : html`<em>deleted comment</em>`}
+                ${ parentCommentId && html` replied to ${parentCommentUsername ? html`<a href="#comment-${parentCommentId}">${parentCommentUsername}</a>` : "deleted comment"}` }
+            </strong>
+            ${ userId && (
+                editing
+                    ? editForm
+                    : html`
+                        <p style=${{wordWrap: "break-word", whiteSpace: "pre-line", flex: 1}}>${content}</p>
+                        ${commentControlLinks}
+                    `
+                )
+            }
         </div>
     </div>
+    ${replies?.length > 0 && html`
+        <div class="d-flex flex-row justify-content-stretch" style=${{paddingLeft: "1.25rem"}}>
+            <a href="#comment-${commentId}" className="border-start border-5" style=${{display: "block", width: "1.25rem", borderBottomLeftRadius: "2em"}}></a>
+            <div style=${{flex: "1"}}>
+                ${replies.map(reply => html`
+                    <${CringeComment}
+                        key=${reply.id}
+                        ...${reply}
+                        ...${{currentUserId, currentUserAdmin}}
+                        parentCommentId=${props.id}
+                        parentCommentUsername=${props.user?.username}
+                    />`
+                )}
+            </div>
+        </div>
     `}
 `}
 
