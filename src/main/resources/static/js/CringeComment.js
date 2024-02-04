@@ -1,4 +1,4 @@
-import { html, useState, useEffect, register } from "./deps.js";
+import { html, useState, useEffect } from "./deps.js";
 import CommentForm from "./CommentForm.js";
 
 function CommentEditLinks(props) {
