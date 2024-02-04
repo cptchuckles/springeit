@@ -61,14 +61,24 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public boolean eraseById(Long commentId, User eraser) {
+    public boolean removeById(Long commentId, User remover) {
         Comment comment = commentRepository.findById(commentId).orElse(null);
         if (comment == null) {
             return false;
         }
-        if (comment.getUser().getId() != eraser.getId() && !eraser.isAdmin()) {
+        if (comment.getUser().getId() != remover.getId() && !remover.isAdmin()) {
             return false;
         }
+
+        if (comment.getReplies().size() > 0) {
+            return erase(comment, remover);
+        }
+        else {
+            return delete(comment, remover);
+        }
+    }
+
+    public boolean erase(Comment comment, User eraser) {
         comment.getUser().getComments().remove(comment);
         comment.setUser(null);
         comment.getRatings().stream().forEach(rating -> ratingService.delete(rating));

@@ -139,7 +139,7 @@ public class CommentApiController {
         HttpSession session, Model model, User currentUser,
         @PathVariable("id") Long id
     ) {
-        if (!commentService.eraseById(id, currentUser)) {
+        if (!commentService.removeById(id, currentUser)) {
             return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
