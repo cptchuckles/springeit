@@ -5,6 +5,12 @@ function CommentEditLinks(props) {
     const { comment, addReply, canEdit, showEditForm, deleteComment } = props;
 
     const [showForm, setShowForm] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const showReplyForm = () => setShowForm(true);
+    const showDeletePrompt = () => setIsDeleting(true);
+    const hideDeletePrompt = () => setIsDeleting(false);
+
     const form = new CommentForm({
         parentComment: comment,
         cringeId: comment.cringeId,
@@ -12,20 +18,36 @@ function CommentEditLinks(props) {
         closeForm: () => setShowForm(false)
     });
 
-    const showReplyForm = (ev) => {
-        ev.preventDefault();
-        setShowForm(true);
-    }
+    const deletePrompt = html`
+    <div style="text-align: center">
+        <h4>Delete this comment?</h4>
+        <p>
+            <button className="btn btn-danger mx-2" onClick=${deleteComment}>Confirm</button>
+            <button className="btn btn-secondary mx-2" onClick=${hideDeletePrompt}>Cancel</button>
+        </p>
+    </div>
+    `;
 
-    return showForm ? form : html`
-<span className="d-flex flex-row gap-2 justify-content-end" style=${{fontSize: "0.8em"}}>
-    <a style=${{cursor: "pointer"}} onClick=${showReplyForm} className="link-dark fw-bold">Reply</a>
-    ${ canEdit && html`
-        <a style=${{cursor: "pointer"}} onClick=${showEditForm} className="link-dark fw-bold">Edit</a>
-        <a style=${{cursor: "pointer"}} onClick=${deleteComment} className="link-dark fw-bold">Delete</a>
-    `}
-</span>
-`}
+    const links = html`
+    <span className="d-flex flex-row gap-2 justify-content-end" style=${{fontSize: "0.8em"}}>
+        <a style=${{cursor: "pointer"}} onClick=${showReplyForm} className="link-dark fw-bold">Reply</a>
+        ${ canEdit && html`
+            <a style=${{cursor: "pointer"}} onClick=${showEditForm} className="link-dark fw-bold">Edit</a>
+            <a style=${{cursor: "pointer"}} onClick=${showDeletePrompt} className="link-dark fw-bold">Delete</a>
+        `}
+    </span>
+    `;
+
+    if (showForm) {
+        return form;
+    }
+    else if (isDeleting) {
+        return deletePrompt;
+    }
+    else {
+        return links;
+    }
+}
 
 function CringeComment(props) {
     let {
