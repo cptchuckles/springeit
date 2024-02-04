@@ -33,7 +33,7 @@ import jakarta.validation.constraints.Size;
  * User
  */
 @Entity
-@JsonIgnoreProperties({"email", "passwordHash", "isAdmin", "createdAt", "updatedAt", "cringe", "cringeRatings", "comments", "commentRatings", "whines"})
+@JsonIgnoreProperties({"email", "passwordHash", "totalComplaints", "totalCringe", "admin", "isAdmin", "createdAt", "updatedAt", "cringe", "cringeRatings", "comments", "commentRatings", "whines"})
 @Table(name = "springe_users")
 public class User {
     @Id
