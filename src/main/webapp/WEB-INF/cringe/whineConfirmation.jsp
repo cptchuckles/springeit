@@ -11,7 +11,7 @@
   <body style="background-color: #f78; text-align: center">
     <%@ include file="../insert/header.jsp" %>
     <div class="container mt-5" style="text-align: center" id="top">
-      <img src="/img/baby-girl-cry-svgrepo-com.svg" width="50%" alt="literally you" />
+      <img src="/img/baby-girl-cry-svgrepo-com.svg" width="50%" style="max-height: 50vh" alt="literally you" />
       <h1>Your whine has been recorded.</h1>
       <p><a href="/cringe" class="link link-dark">Return to CringeFeed</a></p>
     </div>
