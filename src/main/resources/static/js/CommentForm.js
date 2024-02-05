@@ -95,18 +95,18 @@ function CommentForm(props) {
     return html`
     <form onSubmit=${submitForm} className=${`form ${parentComment ? "" : "my-3"}`}>
         <textarea
-            autoFocus=${ parentComment ? true : undefined }
-            id=${parentComment ? `reply-${parentComment.commentId}` : undefined }
+            autoFocus=${parentComment ? true : undefined}
+            id=${parentComment ? `reply-${parentComment.commentId}` : undefined}
             name="content"
             rows="4"
-            className=${`form-control border ${closeForm ? "border-1 border-dark" : "border-5 border-primary"} mb-2`}
-            placeholder="${placeholder}"
+            className="form-control mb-2 border ${closeForm ? "border-1 border-dark" : "border-5 border-primary"}"
+            placeholder=${placeholder}
             value=${content}
             onKeyDown=${keydownEventHandler}
             onChange=${ev => setContent(ev.target.value)}
         ></textarea>
         <p className="d-flex flex-row gap-2">
-            <input type="submit" value=${buttonTitle} class=${`btn ${buttonColor}`} />
+            <input type="submit" value=${buttonTitle} class="btn ${buttonColor}" />
             ${ closeForm && html`
             <button type="button" onClick=${closeForm} class="btn btn-secondary">Cancel</button>
             ` }

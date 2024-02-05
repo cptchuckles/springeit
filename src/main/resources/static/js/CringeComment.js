@@ -1,58 +1,49 @@
 import { html, useState, useEffect } from "./deps.js";
 import CommentForm from "./CommentForm.js";
 
-function CommentControlLinks(props) {
-    const { comment, addReply, canEdit, showEditForm, deleteComment } = props;
-
-    const [showForm, setShowForm] = useState(false);
+function CommentControlLinks({ comment, canEdit, addReply, showEditForm, deleteComment }) {
+    const [isReplying, setIsReplying] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
-    const showReplyForm = () => setShowForm(true);
+    const showReplyForm = () => setIsReplying(true);
     const showDeletePrompt = () => setIsDeleting(true);
     const hideDeletePrompt = () => setIsDeleting(false);
 
-    const form = new CommentForm({
-        parentComment: comment,
-        cringeId: comment.cringeId,
-        addReply: addReply,
-        closeForm: () => setShowForm(false)
-    });
-
-    const deletePrompt = html`
-    <div style="text-align: center">
-        <h4>Delete this comment?</h4>
-        <p>
-            <button className="btn btn-danger mx-2" onClick=${deleteComment}>Delete</button>
-            <button className="btn btn-secondary mx-2" onClick=${hideDeletePrompt}>Cancel</button>
-        </p>
-    </div>
-    `;
-
-    const links = html`
-    <span className="d-flex flex-row gap-2 justify-content-end" style=${{fontSize: "0.8em"}}>
-        <a style=${{cursor: "pointer"}} onClick=${showReplyForm} className="link-dark fw-bold">Reply</a>
-        ${ canEdit && html`
-            <a style=${{cursor: "pointer"}} onClick=${showEditForm} className="link-dark fw-bold">Edit</a>
-            <a style=${{cursor: "pointer"}} onClick=${showDeletePrompt} className="link-dark fw-bold">Delete</a>
-        `}
-    </span>
-    `;
-
-    if (showForm) {
-        return form;
+    if (isReplying) {
+        return html`
+        <${CommentForm}
+            parentComment=${comment}
+            cringeId=${comment.cringeId}
+            addReply=${addReply}
+            closeForm=${() => setIsReplying(false)}
+        />`;
     }
     else if (isDeleting) {
-        return deletePrompt;
+        return html`
+        <div style="text-align: center">
+            <h4>Delete this comment?</h4>
+            <p>
+                <button className="btn btn-danger mx-2" onClick=${deleteComment}>Delete</button>
+                <button className="btn btn-secondary mx-2" onClick=${hideDeletePrompt}>Cancel</button>
+            </p>
+        </div>`;
     }
     else {
-        return links;
+        return html`
+        <span className="d-flex flex-row gap-2 justify-content-end" style=${{ fontSize: "0.8em" }}>
+            <a style=${{ cursor: "pointer" }} onClick=${showReplyForm} className="link-dark fw-bold">Reply</a>
+            ${canEdit && html`
+                <a style=${{ cursor: "pointer" }} onClick=${showEditForm} className="link-dark fw-bold">Edit</a>
+                <a style=${{ cursor: "pointer" }} onClick=${showDeletePrompt} className="link-dark fw-bold">Delete</a>
+            `}
+        </span>`;
     }
 }
 
 function CringeComment(props) {
     let {
-        commentId, cringeId, currentUserId, currentUserAdmin, canEdit,
-        user, username,
+        commentId, cringeId, canEdit,
+        user, username, currentUserId, currentUserAdmin,
         parentCommentId, parentCommentUsername,
         takeFocus,
     } = props;
@@ -61,7 +52,6 @@ function CringeComment(props) {
     cringeId = Number(cringeId);
 
     username ??= user?.username ?? "anon";
-
 
     const [userId, setUserId] = useState(Number(props.userId ?? props.user?.id) || null);
     const [content, setContent] = useState(props.content ?? "");
@@ -114,7 +104,6 @@ function CringeComment(props) {
     }
 
     const comment = {...props, commentId, user, userId, cringeId, username};
-    const commentControlLinks = new CommentControlLinks({ comment, addReply, canEdit, showEditForm, deleteComment });
 
     const editForm = new CommentForm({
         ...comment,
@@ -145,14 +134,14 @@ function CringeComment(props) {
         <div className="col d-flex flex-column">
             <strong style=${{fontSize: ".8em"}} className="mb-2">
                 ${userId ? html`<a href="/users/${userId}">${username}</a>` : html`<em>deleted comment</em>`}
-                ${ parentCommentId && html` replied to ${parentCommentUsername ? html`<a href="#comment-${parentCommentId}">${parentCommentUsername}</a>` : "deleted comment"}` }
+                ${parentCommentId && html` replied to ${parentCommentUsername ? html`<a href="#comment-${parentCommentId}">${parentCommentUsername}</a>` : "deleted comment"}`}
             </strong>
-            ${ userId && (
+            ${userId && (
                 editing
                     ? editForm
                     : html`
                         <p style=${{wordWrap: "break-word", whiteSpace: "pre-line", flex: 1}}>${content}</p>
-                        ${commentControlLinks}
+                        <${CommentControlLinks} ...${{ comment, canEdit, addReply, showEditForm, deleteComment }} />
                     `
                 )
             }
@@ -160,13 +149,13 @@ function CringeComment(props) {
     </div>
     ${replies?.length > 0 && html`
         <div class="d-flex flex-row justify-content-stretch" style=${{paddingLeft: "1.25rem"}}>
-            <a href="#comment-${commentId}" className="border-start border-5" style=${{display: "block", width: "1.25rem", borderBottomLeftRadius: "2em"}}></a>
+            <a href="#comment-${commentId}" className="border-start border-5" style=${{ display: "block", width: "1.25rem", borderBottomLeftRadius: "2em" }}></a>
             <div style=${{flex: "1"}}>
                 ${replies.map(reply => html`
                     <${CringeComment}
                         key=${reply.id}
                         ...${reply}
-                        ...${{currentUserId, currentUserAdmin}}
+                        ...${{ currentUserId, currentUserAdmin }}
                         parentCommentId=${props.id}
                         parentCommentUsername=${props.user?.username}
                     />`

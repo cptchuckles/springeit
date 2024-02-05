@@ -11,8 +11,6 @@ function CommentTree({ cringeId, currentUserId, currentUserAdmin }) {
         setRootComments(newComments);
     }
 
-    const commentForm = new CommentForm({ cringeId, addRootComment });
-
     useEffect(() => {
         fetch(`/api/cringe/${cringeId}/comments`)
             .then(res => {
@@ -42,11 +40,17 @@ function CommentTree({ cringeId, currentUserId, currentUserAdmin }) {
     }, [rootComments]);
 
     return html`
-${commentForm}
-<div>
-    ${rootComments.map(comment => html`<${CringeComment} key=${comment.id} ...${{...comment, commentId: comment.id}} />`)}
-</div>
-`
+        <${CommentForm} ...${{ cringeId, addRootComment }} />
+        <div>
+            ${rootComments.map(comment => html`
+                <${CringeComment}
+                    key=${comment.id}
+                    commentId=${comment.id}
+                    ...${comment}
+                />`
+            )}
+        </div>
+    `
 }
 
 register(CommentTree, "comment-tree", ["cringeId", "currentUserId", "currentUserAdmin"]);
