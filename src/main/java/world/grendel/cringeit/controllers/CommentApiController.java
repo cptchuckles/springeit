@@ -139,16 +139,7 @@ public class CommentApiController {
         HttpSession session, Model model, User currentUser,
         @PathVariable("id") Long id
     ) {
-        switch (commentService.removeById(id, currentUser)) {
-            case INTERNAL_ERROR:
-                return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
-            case NOT_AUTHORIZED:
-                return new ResponseEntity<>(false, HttpStatus.FORBIDDEN);
-            case NOT_FOUND:
-                return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
-            case SUCCESS:
-            default:
-                return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
-        }
+        HttpStatus status = commentService.removeById(id, currentUser);
+        return new ResponseEntity<>(status == HttpStatus.ACCEPTED, status);
     }
 }

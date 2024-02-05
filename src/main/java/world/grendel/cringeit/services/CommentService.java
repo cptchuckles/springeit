@@ -3,6 +3,7 @@ package world.grendel.cringeit.services;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import world.grendel.cringeit.models.Comment;
@@ -17,13 +18,6 @@ import world.grendel.cringeit.repositories.CommentRepository;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final CommentRatingService ratingService;
-
-    public enum ActionResult {
-        SUCCESS,
-        NOT_FOUND,
-        NOT_AUTHORIZED,
-        INTERNAL_ERROR,
-    }
 
     public CommentService(CommentRepository commentRepository, CommentRatingService ratingService) {
         this.commentRepository = commentRepository;
@@ -68,30 +62,30 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public ActionResult removeById(Long commentId, User remover) {
+    public HttpStatus removeById(Long commentId, User remover) {
         Comment comment = commentRepository.findById(commentId).orElse(null);
         if (comment == null) {
-            return ActionResult.NOT_FOUND;
+            return HttpStatus.NOT_FOUND;
         }
-        if (comment.getUser().getId() != remover.getId() && !remover.isAdmin()) {
-            return ActionResult.NOT_AUTHORIZED;
+        if (!remover.isAdmin() && comment.getUser() != null && comment.getUser().getId() != remover.getId()) {
+            return HttpStatus.FORBIDDEN;
         }
 
         if (comment.getReplies().size() > 0) {
             if (!erase(comment, remover)) {
-                return ActionResult.INTERNAL_ERROR;
+                return HttpStatus.INTERNAL_SERVER_ERROR;
             }
         }
         else {
             if (!delete(comment, remover)) {
-                return ActionResult.INTERNAL_ERROR;
+                return HttpStatus.INTERNAL_SERVER_ERROR;
             }
         }
 
-        return ActionResult.SUCCESS;
+        return HttpStatus.ACCEPTED;
     }
 
-    public boolean erase(Comment comment, User eraser) {
+    private boolean erase(Comment comment, User eraser) {
         comment.getUser().getComments().remove(comment);
         comment.setUser(null);
         comment.getRatings().stream().forEach(rating -> ratingService.delete(rating));
@@ -101,7 +95,7 @@ public class CommentService {
         return true;
     }
 
-    public boolean delete(Comment comment, User deleter) {
+    private boolean delete(Comment comment, User deleter) {
         if (comment == null) {
             return false;
         }
