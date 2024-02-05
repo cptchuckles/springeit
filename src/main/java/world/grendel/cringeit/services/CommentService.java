@@ -16,11 +16,11 @@ import world.grendel.cringeit.repositories.CommentRepository;
 @Service
 public class CommentService {
     private final CommentRepository commentRepository;
-	private final CommentRatingService ratingService;
+    private final CommentRatingService ratingService;
 
-	public CommentService(CommentRepository commentRepository, CommentRatingService ratingService) {
-		this.commentRepository = commentRepository;
-		this.ratingService = ratingService;
+    public CommentService(CommentRepository commentRepository, CommentRatingService ratingService) {
+        this.commentRepository = commentRepository;
+        this.ratingService = ratingService;
     }
 
     public List<Comment> getAllForCringe(Long cringeId) {

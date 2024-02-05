@@ -34,8 +34,8 @@ import world.grendel.cringeit.services.CringeService;
 @RequestMapping("/api")
 public class CommentApiController {
     private final CommentService commentService;
-	private final CringeService cringeService;
-	private final CommentRatingService ratingService;
+    private final CringeService cringeService;
+    private final CommentRatingService ratingService;
 
     public CommentApiController(
         CommentService commentService,
@@ -43,8 +43,8 @@ public class CommentApiController {
         CommentRatingService ratingService
     ) {
         this.commentService = commentService;
-		this.cringeService = cringeService;
-		this.ratingService = ratingService;
+        this.cringeService = cringeService;
+        this.ratingService = ratingService;
     }
 
     @GetMapping("/cringe/{cringeId}/comments")

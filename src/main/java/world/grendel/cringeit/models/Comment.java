@@ -45,7 +45,7 @@ public class Comment {
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
-	@OneToMany(mappedBy = "parentComment")
+    @OneToMany(mappedBy = "parentComment")
     private List<Comment> replies = new ArrayList<>();
 
     @NotBlank

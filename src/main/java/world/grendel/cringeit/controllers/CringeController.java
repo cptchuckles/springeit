@@ -29,11 +29,11 @@ import world.grendel.cringeit.services.CringeService;
 @RequestMapping("/cringe")
 public class CringeController {
     private final CringeService cringeService;
-	private final CringeRatingService ratingService;
+    private final CringeRatingService ratingService;
 
     public CringeController(CringeService cringeService, CringeRatingService ratingService) {
         this.cringeService = cringeService;
-		this.ratingService = ratingService;
+        this.ratingService = ratingService;
     }
 
     @GetMapping
