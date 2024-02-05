@@ -1,5 +1,11 @@
 import { html, useState, register } from "./deps.js";
 
+class UnauthorizedException extends Error {
+    constructor(msg) {
+        super(msg);
+    }
+}
+
 function CommentForm(props) {
     let {
         cringeId,
@@ -45,6 +51,9 @@ function CommentForm(props) {
         })
         .then(result => {
             if (!result.ok) {
+                if (result.status === 403) {
+                    throw new UnauthorizedException("Unauthorized");
+                }
                 throw new Error("can't poast");
             }
             return result.json()
@@ -78,7 +87,12 @@ function CommentForm(props) {
                 closeForm();
             }
         })
-        .catch(e => console.error(e));
+        .catch(e => {
+            console.error(e);
+            if (e instanceof UnauthorizedException) {
+                window.location.pathname = "/logout";
+            }
+        });
     }
 
     const keydownEventHandler = (ev) => {
