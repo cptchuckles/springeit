@@ -20,7 +20,7 @@ function CommentControlLinks({ comment, canEdit, addReply, showEditForm, deleteC
     }
     else if (isDeleting) {
         return html`
-        <div style="text-align: center">
+        <div className="bg-warning rounded-pill" style="text-align: center">
             <h4>Delete this comment?</h4>
             <p>
                 <button className="btn btn-danger mx-2" onClick=${deleteComment}>Delete</button>
