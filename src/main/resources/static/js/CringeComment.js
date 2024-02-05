@@ -62,16 +62,15 @@ function CringeComment(props) {
 
     username ??= user?.username ?? "anon";
 
-    const userVoteDelta = () => {
-        return props.ratings.filter(r => r.user.id == currentUserId).reduce((acc, r) => acc + r.delta, 0);
-    }
 
     const [userId, setUserId] = useState(Number(props.userId ?? props.user?.id) || null);
     const [content, setContent] = useState(props.content ?? "");
     const [replies, setReplies] = useState(props.replies ?? []);
+
+    const userVoteDelta = props.ratings.filter(r => r.user.id == currentUserId).reduce((acc, r) => acc + r.delta, 0);
     const [rating, setRating] = useState(Number(props.totalRating));
-    const [votedUp, setVotedUp] = useState(userVoteDelta() > 0);
-    const [votedDown, setVotedDown] = useState(userVoteDelta() < 0);
+    const [votedUp, setVotedUp] = useState(userVoteDelta > 0);
+    const [votedDown, setVotedDown] = useState(userVoteDelta < 0);
 
     canEdit ||= ((currentUserId == user?.id) || currentUserAdmin)
     const [editing, setEditing] = useState(false);
