@@ -18,6 +18,13 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final CommentRatingService ratingService;
 
+    public enum ActionResult {
+        SUCCESS,
+        NOT_FOUND,
+        NOT_AUTHORIZED,
+        INTERNAL_ERROR,
+    }
+
     public CommentService(CommentRepository commentRepository, CommentRatingService ratingService) {
         this.commentRepository = commentRepository;
         this.ratingService = ratingService;
@@ -61,21 +68,27 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public boolean removeById(Long commentId, User remover) {
+    public ActionResult removeById(Long commentId, User remover) {
         Comment comment = commentRepository.findById(commentId).orElse(null);
         if (comment == null) {
-            return false;
+            return ActionResult.NOT_FOUND;
         }
         if (comment.getUser().getId() != remover.getId() && !remover.isAdmin()) {
-            return false;
+            return ActionResult.NOT_AUTHORIZED;
         }
 
         if (comment.getReplies().size() > 0) {
-            return erase(comment, remover);
+            if (!erase(comment, remover)) {
+                return ActionResult.INTERNAL_ERROR;
+            }
         }
         else {
-            return delete(comment, remover);
+            if (!delete(comment, remover)) {
+                return ActionResult.INTERNAL_ERROR;
+            }
         }
+
+        return ActionResult.SUCCESS;
     }
 
     public boolean erase(Comment comment, User eraser) {
