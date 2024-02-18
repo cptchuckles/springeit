@@ -73,7 +73,12 @@ function CringeComment(props) {
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({delta})
         })
-        .then(result => result.json())
+        .then(result => {
+            if (! result.ok) {
+                throw new Error(`(${result.status}) ${result.statusText}`);
+            }
+            return result.json()
+        })
         .then(success)
         .catch(e => console.log("comment rating failed:", e));
     }
