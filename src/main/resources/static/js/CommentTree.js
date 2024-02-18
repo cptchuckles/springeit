@@ -13,24 +13,24 @@ function CommentTree({ cringeId, currentUserId, currentUserAdmin }) {
 
     useEffect(() => {
         fetch(`/api/cringe/${cringeId}/comments`)
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error("can't get comments");
-                }
-                return res.json();
-            })
-            .then(comments => {
-                const totalComments = [];
-                for (let i = comments.length; i-- > 0;) {
-                    const comment = comments[i];
-                    comment.currentUserId = currentUserId;
-                    comment.currentUserAdmin = currentUserAdmin == "true";
-                    comment.commentId = comment.id;
-                    totalComments.push(comment);
-                }
-                setRootComments(totalComments);
-            })
-            .catch(e => console.error(e));
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("can't get comments");
+            }
+            return res.json();
+        })
+        .then(comments => {
+            const totalComments = [];
+            for (let i = comments.length; i-- > 0;) {
+                const comment = comments[i];
+                comment.currentUserId = currentUserId;
+                comment.currentUserAdmin = currentUserAdmin == "true";
+                comment.commentId = comment.id;
+                totalComments.push(comment);
+            }
+            setRootComments(totalComments);
+        })
+        .catch(e => console.error(e));
     }, []);
 
     useEffect(() => {

@@ -126,7 +126,7 @@ function CringeComment(props) {
 
     return html`
     <div id=${`comment-${commentId}`} className="comment border border-3 border-info rounded-2 mt-2 p-2 d-flex flex-row gap-2">
-        ${ userId && html`
+        ${userId && html`
         <div className="d-flex flex-column gap-1 align-items-center">
             <button className="btn ${votedUp ? "btn-info" : "btn-clear"} rounded-pill fw-bold" onClick=${rateUp}>
                 <span class="vote vote-up"></span>
@@ -154,9 +154,9 @@ function CringeComment(props) {
         </div>
     </div>
     ${replies?.length > 0 && html`
-        <div class="d-flex flex-row justify-content-stretch" style=${{paddingLeft: "1.25rem"}}>
+        <div class="d-flex flex-row justify-content-stretch" style=${{ paddingLeft: "1.25rem" }}>
             <a href="#comment-${commentId}" className="border-start border-5" style=${{ display: "block", width: "1.25rem", borderBottomLeftRadius: "2em" }}></a>
-            <div style=${{flex: "1"}}>
+            <div style=${{ flex: "1" }}>
                 ${replies.map(reply => html`
                     <${CringeComment}
                         key=${reply.id}
