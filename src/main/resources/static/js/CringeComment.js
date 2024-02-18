@@ -119,7 +119,8 @@ function CringeComment(props) {
 
     useEffect(() => {
         if (takeFocus) {
-            document.location.hash = `comment-${props.id}`;
+            document.location.hash = "";
+            document.location.hash = `comment-${commentId}`;
         }
     }, []);
 
