@@ -112,7 +112,7 @@ function CommentForm(props) {
             autoFocus=${parentComment ? true : undefined}
             id=${parentComment ? `reply-${parentComment.commentId}` : undefined}
             name="content"
-            rows="4"
+            rows=${Math.max(4, content.split('\n').length)}
             className="form-control mb-2 border ${closeForm ? "border-1 border-dark" : "border-5 border-primary"}"
             placeholder=${placeholder}
             value=${content}
