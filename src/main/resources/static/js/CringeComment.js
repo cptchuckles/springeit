@@ -1,44 +1,6 @@
 import { html, useState, useEffect } from "./deps.js";
 import CommentForm from "./CommentForm.js";
-
-function CommentControlLinks({ comment, canEdit, addReply, showEditForm, deleteComment }) {
-    const [isReplying, setIsReplying] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
-
-    const showReplyForm = () => setIsReplying(true);
-    const showDeletePrompt = () => setIsDeleting(true);
-    const hideDeletePrompt = () => setIsDeleting(false);
-
-    if (isReplying) {
-        return html`
-        <${CommentForm}
-            parentComment=${comment}
-            cringeId=${comment.cringeId}
-            addReply=${addReply}
-            closeForm=${() => setIsReplying(false)}
-        />`;
-    }
-    else if (isDeleting) {
-        return html`
-        <div className="bg-warning rounded-pill" style="text-align: center">
-            <h4>Delete this comment?</h4>
-            <p>
-                <button className="btn btn-danger mx-2" onClick=${deleteComment}>Delete</button>
-                <button className="btn btn-secondary mx-2" onClick=${hideDeletePrompt}>Cancel</button>
-            </p>
-        </div>`;
-    }
-    else {
-        return html`
-        <span className="d-flex flex-row gap-2 justify-content-end" style=${{ fontSize: "0.8em" }}>
-            <a style=${{ cursor: "pointer" }} onClick=${showReplyForm} className="link-dark fw-bold">Reply</a>
-            ${canEdit && html`
-                <a style=${{ cursor: "pointer" }} onClick=${showEditForm} className="link-dark fw-bold">Edit</a>
-                <a style=${{ cursor: "pointer" }} onClick=${showDeletePrompt} className="link-dark fw-bold">Delete</a>
-            `}
-        </span>`;
-    }
-}
+import CommentControlLinks from "./CommentControlLinks.js";
 
 function CringeComment(props) {
     let {
